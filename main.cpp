@@ -19,6 +19,7 @@ int main(){
 
 	cout << "HI!\nBYE!";
 	cout << "Here is a change";
+	cout << "Change #2 :D";
 
 	return 0;
 }
