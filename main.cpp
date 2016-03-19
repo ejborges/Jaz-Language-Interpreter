@@ -75,10 +75,12 @@ int main(int argc, char* argv[]) {
             cout << "Error reading the file " << filename;
             return 1;
         }
-#ifdef DEBUG_TEXT
+    #ifdef DEBUG_TEXT
       cout << "file_lines[" << i << "] = " << file_lines[i] << endl;
-#endif
+    #endif
     }
+
+
 
     delete [] file_lines;
 
