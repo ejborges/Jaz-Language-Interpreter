@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-//#include <algorithm> // count()
+#include <algorithm> // count()
 
 #define cout cout<<"\t"
 #define DEBUG_TEXT
