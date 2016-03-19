@@ -1,1 +1,4 @@
 *.DS_Store
+bin/
+.idea/
+CMakeLists.txt

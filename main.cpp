@@ -20,6 +20,8 @@
 
 using namespace std;
 
+void analyze_args(int argc, char* argv[]);
+
 int main(int argc, char* argv[]) {
 
     // Analyze arguments for correctness
@@ -85,4 +87,8 @@ int main(int argc, char* argv[]) {
     delete [] file_lines;
 
     return 0;
+}
+
+void analyze_args(int argc, char* argv[]){
+
 }
