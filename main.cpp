@@ -14,46 +14,69 @@
 #include <fstream>
 #include <string>
 #include <algorithm> // count()
+#include "jaz.h"
 
 #define cout cout<<"\t"
 #define DEBUG_TEXT
 
 using namespace std;
 
+string filename;
+string *file_lines;
 void analyze_args(int argc, char* argv[]);
+void read_file();
 
 int main(int argc, char* argv[]) {
 
-    // Analyze arguments for correctness
+    // Initialization
+    analyze_args(argc, argv);
+    read_file();
+
+
+
+
+
+    delete [] file_lines;
+
+    return 0;
+}
+
+// Analyze arguments for correctness
+void analyze_args(int argc, char* argv[]){
     if(argc > 2){
         cout << "Too many arguments" << endl;
         cout << "Need: somefile.jaz" << endl;
-        return 1;
+        exit(1);
     }
     else if(argc < 2){
         cout << "No arguments found" << endl;
         cout << "Need: somefile.jaz" << endl;
-        return 1;
+        exit(1);
     }
-    string filename = argv[1];
+    filename = argv[1];
     if(filename.length() < 5){
         cout << "Invalid argument '" << filename << "'";
-        return 1;
+        exit(1);
     }
     else if (filename[filename.length() - 4] != '.' &&
-            filename[filename.length() - 3] != 'j' &&
-            filename[filename.length() - 2] != 'a' &&
-            filename[filename.length() - 1] != 'z')
+             filename[filename.length() - 3] != 'j' &&
+             filename[filename.length() - 2] != 'a' &&
+             filename[filename.length() - 1] != 'z')
     {
         cout << "File is not of type .jaz";
-        return 1;
+        exit(1);
     }
+}
+
+// reads the .jaz file and puts
+// each line into a string array
+void read_file(){
 
     // Open the .jaz file
     ifstream in_file(filename);
     if(in_file.fail()){
         cout << "Error opening file " << filename;
-        return 1;
+        exit(1);
     }
 
     // Get the number of lines in the file
@@ -67,7 +90,7 @@ int main(int argc, char* argv[]) {
     #endif
 
     // Initialize array
-    string *file_lines = new string[number_of_lines];
+    file_lines = new string[number_of_lines];
     for(int i = 0; i < number_of_lines; i++) file_lines[i] = "";
 
     // Load .jaz file lines into array
@@ -75,20 +98,12 @@ int main(int argc, char* argv[]) {
         getline(in_file, file_lines[i]);
         if(in_file.fail() && !in_file.eof()){
             cout << "Error reading the file " << filename;
-            return 1;
+            exit(1);
         }
-    #ifdef DEBUG_TEXT
-      cout << "file_lines[" << i << "] = " << file_lines[i] << endl;
-    #endif
+        #ifdef DEBUG_TEXT
+        cout << "file_lines[" << i << "] = " << file_lines[i] << endl;
+        #endif
     }
 
-
-
-    delete [] file_lines;
-
-    return 0;
-}
-
-void analyze_args(int argc, char* argv[]){
-
+    in_file.close();
 }

@@ -10,6 +10,6 @@ public:
 
 private:
 
-}
+};
 
 #endif //JAZ_INTERPRETER_OPERATORS_H
