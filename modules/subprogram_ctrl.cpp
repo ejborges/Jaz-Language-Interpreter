@@ -1,23 +1,23 @@
 #include "subprogram_ctrl.h"
 
-begin()
+void begin()
 {
 	//Any variable declared in here will need a scope level
 	// 1 higher than the current scope level.
 }
 
-end()
+void end()
 {
 	//This will signal the end of a subroutine call.
 }
 
-returnFromCall()
+void returnFromCall()
 {
 	//This will decrement the current scope level so the program
 	// knows what variables it has access to.
 }
 
-call(std::string label)
+void call(std::string label)
 {
 	//We use the input label to jump to the subroutine specified
 	// by the label parameter and increment the current scope level.
