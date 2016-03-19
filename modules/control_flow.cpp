@@ -1,22 +1,22 @@
 #include "control_flow.h"
 
-void control_flow::check_label(string label)
+void check_label(std::string label)
 {
 
 }
-void control_flow::goto_label(string target)
+void goto_label(std::string target)
 {
 
 }
-void control_flow::go_false(string target)
+void go_false(std::string target)
 {
 
 }
-void control_flow::go_true(string target)
+void go_true(std::string target)
 {
 
 }
-void control_flow::halt()
+void halt()
 {
-	
+
 }

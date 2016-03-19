@@ -1,15 +1,10 @@
 #ifndef JAZ_INTERPRETER_SUBPROGRAM_CTRL_H
 #define JAZ_INTERPRETER_SUBPROGRAM_CTRL_H
+#include <string>
 
-class subprogram_ctrl{
-public:
 void begin();
 void end();
 void returnFromCall();
-void call(string label);
-
-private:
-
-};
+void call(std::string label);
 
 #endif //JAZ_INTERPRETER_SUBPROGRAM_CTRL_H

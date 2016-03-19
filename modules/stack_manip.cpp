@@ -1,26 +1,26 @@
 #include "stack_manip.h"
 
-void stack_manip::push()
+void push()
 {
 
 }
-void stack_manip::push_value()
+void push_value()
 {
 
 }
-void stack_manip::push_address()
+void push_address()
 {
 
 }
-void stack_manip::pop()
+void pop()
 {
 
 }
-void stack_manip::set_value()
+void set_value()
 {
 
 }
-void stack_manip::copy()
+void copy()
 {
 	
 }

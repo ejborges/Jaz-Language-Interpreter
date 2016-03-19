@@ -1,16 +1,10 @@
 #ifndef JAZ_INTERPRETER_CONTROL_FLOW_H
 #define JAZ_INTERPRETER_CONTROL_FLOW_H
-
-class control_flow{
-public:
-void check_label(string label);
-void goto_label(string target);
-void go_false(string target);
-void go_true(string target);
+#include <string>
+void check_label(std::string label);
+void goto_label(std::string target);
+void go_false(std::string target);
+void go_true(std::string target);
 void halt();
-
-private:
-
-};
 
 #endif //JAZ_INTERPRETER_CONTROL_FLOW_H

@@ -1,8 +1,6 @@
 #ifndef JAZ_INTERPRETER_OPERATORS_H
 #define JAZ_INTERPRETER_OPERATORS_H
 
-class operators{
-public:
 void add();
 void sub();
 void mul();
@@ -17,9 +15,5 @@ void greater_than_or_equal();
 void less_than();
 void greater_than();
 void equal();
-
-private:
-
-};
 
 #endif //JAZ_INTERPRETER_OPERATORS_H
