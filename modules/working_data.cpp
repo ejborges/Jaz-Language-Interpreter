@@ -39,9 +39,13 @@ using namespace std;
 string file;
 string filename;
 string *file_lines;
-int file_lines_length;
+unsigned int file_lines_length;
 
 string instruction;
 string parameter;
-int line_number;
-int scope_level;
+unsigned int program_line_number;
+unsigned int scope_level;
+stack<int> program_line_number_stack;
+stack<int> integer_stack;
+vector<variable_struct> variable_table;
+vector<label_struct> label_table;

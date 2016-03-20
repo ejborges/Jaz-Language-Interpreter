@@ -36,16 +36,34 @@
 #define JAZ_INTERPRETER_WORKING_DATA_H
 
 #include <string>
+#include <stack>
+#include <vector>
 
-// defined in jaz.cpp
 extern std::string file;
 extern std::string filename;
 extern std::string *file_lines;
-extern int file_lines_length;
+extern unsigned int file_lines_length;
 
 extern std::string instruction;
 extern std::string parameter;
-extern int line_number;
-extern int scope_level;
+extern unsigned int program_line_number;
+extern unsigned int scope_level;
+extern std::stack<int> program_line_number_stack;
+extern std::stack<int> integer_stack;
+
+struct variable_struct {
+    std::string name;
+    unsigned int address;
+    int value;
+    int scope_value;
+};
+
+struct label_struct {
+    std::string label_name;
+    unsigned int line_number;
+};
+
+extern std::vector<variable_struct> variable_table;
+extern std::vector<label_struct> label_table;
 
 #endif //JAZ_INTERPRETER_WORKING_DATA_H
