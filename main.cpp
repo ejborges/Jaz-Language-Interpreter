@@ -37,7 +37,7 @@
  *
  */
 
-//#include <iostream>
+#include <iostream>
 #include "jaz.h"
 
 using namespace std;
@@ -47,8 +47,14 @@ int main(int argc, char* argv[]) {
     // Initialization
     init(argc, argv);
 
+#ifdef DEBUG_TEXT
+    for(int i = 0; i < file_lines_length; i++)
+        cout << "get_instruction(file_lines[" << i << "]) = " << get_instruction(file_lines[i]) << endl;
+#endif
+
     bool next_line = true;
     while(next_line){
+
         next_line = false;
     }
 

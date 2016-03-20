@@ -39,6 +39,7 @@ using namespace std;
 string file;
 string filename;
 string *file_lines;
+int file_lines_length;
 
 string instruction;
 string parameter;

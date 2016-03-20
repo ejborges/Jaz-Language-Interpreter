@@ -81,20 +81,19 @@ void init(int argc, char* argv[]){
 
     // Get the number of lines in the file
     // http://stackoverflow.com/a/3072840
-    int number_of_lines;
-    number_of_lines = (int)count(istreambuf_iterator<char>(in_file), istreambuf_iterator<char>(), '\n');
+    file_lines_length = (int)count(istreambuf_iterator<char>(in_file), istreambuf_iterator<char>(), '\n');
     in_file.seekg(0, in_file.beg); // may need to return to beginning of file
-    number_of_lines++; // just in case the last line didn't end with a newline '\n'
+    file_lines_length++; // just in case the last line didn't end with a newline '\n'
 #ifdef DEBUG_TEXT
-    cout << "Number of lines in file " << file << " = " << number_of_lines << endl;
+    cout << "Number of lines in file " << file << " = " << file_lines_length << endl;
 #endif
 
     // Initialize array
-    file_lines = new string[number_of_lines];
-    for(int i = 0; i < number_of_lines; i++) file_lines[i] = "";
+    file_lines = new string[file_lines_length];
+    for(int i = 0; i < file_lines_length; i++) file_lines[i] = "";
 
     // Load .jaz file lines into array
-    for(int i = 0; i < number_of_lines; i++){
+    for(int i = 0; i < file_lines_length; i++){
         getline(in_file, file_lines[i]);
         if(in_file.fail() && !in_file.eof()){
             cout << "Error reading the file " << file;
@@ -109,7 +108,13 @@ void init(int argc, char* argv[]){
 }
 
 string get_instruction(string code_line){
-
+    string temp = "";
+    for(int i = 0; i < code_line.length(); i++){
+        if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
+        temp += code_line[i];
+        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) break;
+    }
+    return temp;
 }
 
 string get_parameter(string code_line){

@@ -41,6 +41,7 @@
 extern std::string file;
 extern std::string filename;
 extern std::string *file_lines;
+extern int file_lines_length;
 
 extern std::string instruction;
 extern std::string parameter;
