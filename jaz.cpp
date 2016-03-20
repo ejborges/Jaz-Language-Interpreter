@@ -44,6 +44,7 @@
 
 using namespace std;
 
+string file;
 string filename;
 string* file_lines;
 
@@ -60,24 +61,25 @@ void init(int argc, char* argv[]){
         cout << "Need: somefile.jaz" << endl;
         exit(1);
     }
-    filename = argv[1];
-    if(filename.length() < 5){
-        cout << "Invalid argument '" << filename << "'";
+    file = argv[1];
+    if(file.length() < 5){
+        cout << "Invalid argument '" << file << "'";
         exit(1);
     }
-    else if (filename[filename.length() - 4] != '.' &&
-             filename[filename.length() - 3] != 'j' &&
-             filename[filename.length() - 2] != 'a' &&
-             filename[filename.length() - 1] != 'z')
+    else if (file[file.length() - 4] != '.' &&
+             file[file.length() - 3] != 'j' &&
+             file[file.length() - 2] != 'a' &&
+             file[file.length() - 1] != 'z')
     {
         cout << "File is not of type .jaz";
         exit(1);
     }
+    filename = file.substr(0, file.length() - 4);
 
     // Open the .jaz file
-    ifstream in_file(filename);
+    ifstream in_file(file);
     if(in_file.fail()){
-        cout << "Error opening file " << filename;
+        cout << "Error opening file " << file;
         exit(1);
     }
 
@@ -88,7 +90,7 @@ void init(int argc, char* argv[]){
     in_file.seekg(0, in_file.beg); // may need to return to beginning of file
     number_of_lines++; // just in case the last line didn't end with a newline '\n'
 #ifdef DEBUG_TEXT
-    cout << "Number of lines in file " << filename << " = " << number_of_lines << endl;
+    cout << "Number of lines in file " << file << " = " << number_of_lines << endl;
 #endif
 
     // Initialize array
@@ -99,7 +101,7 @@ void init(int argc, char* argv[]){
     for(int i = 0; i < number_of_lines; i++){
         getline(in_file, file_lines[i]);
         if(in_file.fail() && !in_file.eof()){
-            cout << "Error reading the file " << filename;
+            cout << "Error reading the file " << file;
             exit(1);
         }
 #ifdef DEBUG_TEXT
@@ -108,4 +110,16 @@ void init(int argc, char* argv[]){
     }
 
     in_file.close();
+}
+
+void find_labels(){
+
+}
+
+void read_line(){
+
+}
+
+void execute_instruction(){
+
 }

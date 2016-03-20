@@ -1,4 +1,4 @@
-/* This is a language interpreter for the Jaz language
+/* This is the data types library for the Jaz language interpreter
  *
  * ----------------------------------------------------------
  *
@@ -21,38 +21,25 @@
  *      https://drive.google.com/open?id=1Kn2HFw5_qydebZM2q2Mb6eNdbSVzJNHYhT4-36sdS2E
  *
  *
- *      HOW TO RUN ------------------------------------------
+ *      HOW TO USE ------------------------------------------
  *
- *          In the command line, after typing this executable's
- *          name, type the name of the .jaz file you wish to
- *          execute. This will run the code in the .jaz file
- *          and print the code's output to a .out file with the
- *          same name as the .jaz file.
- *
- *          Example of arguments: somefile.jaz
+ *          Include this library's .h file in the interpreter's .h file.
+ *          Then, call any of these data types within the interpreter's
+ *          .cpp file while also passing it the appropriate parameters.
  *
  *      HOW IT WORKS ----------------------------------------
  *
- *          TODO
  *
  */
 
-//#include <iostream>
-#include "jaz.h"
+#ifndef JAZ_INTERPRETER_WORKING_DATA_H
+#define JAZ_INTERPRETER_WORKING_DATA_H
 
-using namespace std;
+#include <string>
 
-int main(int argc, char* argv[]) {
+extern std::string instruction;
+extern std::string parameter;
+extern int line_number;
+extern int scope_level;
 
-    // Initialization
-    init(argc, argv);
-
-    bool next_line = true;
-    while(next_line){
-        next_line = false;
-    }
-
-    delete [] file_lines;
-
-    return 0;
-}
+#endif //JAZ_INTERPRETER_WORKING_DATA_H
