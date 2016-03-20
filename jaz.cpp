@@ -44,10 +44,6 @@
 
 using namespace std;
 
-string file;
-string filename;
-string* file_lines;
-
 void init(int argc, char* argv[]){
 
     // Analyze arguments for correctness
@@ -110,6 +106,14 @@ void init(int argc, char* argv[]){
     }
 
     in_file.close();
+}
+
+string get_instruction(string code_line){
+
+}
+
+string get_parameter(string code_line){
+
 }
 
 void find_labels(){

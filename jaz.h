@@ -51,6 +51,8 @@
 #include "modules/working_data.h"
 
 void init(int argc, char* argv[]);
+std::string get_instruction(std::string code_line);
+std::string get_parameter(std::string code_line);
 
 void find_labels();
 void read_line();
