@@ -37,6 +37,11 @@
 
 #include <string>
 
+// defined in jaz.cpp
+extern std::string file;
+extern std::string filename;
+extern std::string *file_lines;
+
 extern std::string instruction;
 extern std::string parameter;
 extern int line_number;

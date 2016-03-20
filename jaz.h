@@ -50,11 +50,6 @@
 #include "modules/subprogram_ctrl.h"
 #include "modules/working_data.h"
 
-// defined in jaz.cpp
-extern std::string file;
-extern std::string filename;
-extern std::string *file_lines;
-
 void init(int argc, char* argv[]);
 
 void find_labels();
