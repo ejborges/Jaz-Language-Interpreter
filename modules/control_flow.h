@@ -68,6 +68,8 @@
 #ifndef JAZ_INTERPRETER_CONTROL_FLOW_H
 #define JAZ_INTERPRETER_CONTROL_FLOW_H
 #include <string>
+#include "working_data.h"
+
 void check_label(std::string label);
 void goto_label(std::string target);
 void go_false(std::string target);

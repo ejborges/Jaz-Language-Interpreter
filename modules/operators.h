@@ -110,6 +110,8 @@
 
 #ifndef JAZ_INTERPRETER_OPERATORS_H
 #define JAZ_INTERPRETER_OPERATORS_H
+#include "working_data.h"
+
 
 void add();
 void sub();
