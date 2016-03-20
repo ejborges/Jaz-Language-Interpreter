@@ -111,8 +111,8 @@ string get_instruction(string code_line){
     string temp = "";
     for(int i = 0; i < code_line.length(); i++){
         if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-        temp += code_line[i];
         if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) break;
+        temp += code_line[i];
     }
     return temp;
 }
@@ -124,12 +124,12 @@ string get_parameter(string code_line){
         if(!gotInstruction)
         {
             if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-            temp += code_line[i];
             if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) 
             {
                 gotInstruction = true;    
                 temp = "";
             }
+            else temp += code_line[i];
         }
         else temp += code_line[i];
     }
@@ -141,7 +141,17 @@ string get_parameter(string code_line){
 }
 
 void find_labels(){
-
+    for(unsigned int i = 0; i < file_lines_length; i++){
+        if(get_instruction(file_lines[i]).compare("label") == 0) {
+            label.label_name = get_parameter(file_lines[i]);
+            label.line_number = i;
+            label_table.push_back(label);
+        }
+    }
+#ifdef DEBUG_TEXT
+    for(int i = 0; i < label_table.size(); i++)
+        cout << "label '" << label_table[i].label_name << "' on line " << label_table[i].line_number << endl;
+#endif
 }
 
 void read_line(){

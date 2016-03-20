@@ -47,5 +47,9 @@ unsigned int program_line_number;
 unsigned int scope_level;
 stack<unsigned int> program_line_number_stack;
 stack<int> integer_stack;
+
+variable_struct variable;
+label_struct label;
+
 vector<variable_struct> variable_table;
 vector<label_struct> label_table;

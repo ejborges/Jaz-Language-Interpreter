@@ -56,12 +56,12 @@ struct variable_struct {
     unsigned int address;
     int value;
     int scope_value;
-};
+} extern variable;
 
 struct label_struct {
     std::string label_name;
     unsigned int line_number;
-};
+} extern label;
 
 extern std::vector<variable_struct> variable_table;
 extern std::vector<label_struct> label_table;

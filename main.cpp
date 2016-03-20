@@ -47,14 +47,12 @@ int main(int argc, char* argv[]) {
     // Initialization
     init(argc, argv);
 
-#ifdef DEBUG_TEXT
-    for(int i = 0; i < file_lines_length; i++)
-        cout << "get_instruction(file_lines[" << i << "]) = " << get_instruction(file_lines[i]) << endl;
-#endif
+    find_labels();
 
     bool next_line = true;
     while(next_line){
-
+        read_line();
+        execute_instruction();
         next_line = false;
     }
 
