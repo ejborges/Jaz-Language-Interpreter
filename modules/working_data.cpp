@@ -45,7 +45,7 @@ string instruction;
 string parameter;
 unsigned int program_line_number;
 unsigned int scope_level;
-stack<int> program_line_number_stack;
+stack<unsigned int> program_line_number_stack;
 stack<int> integer_stack;
 vector<variable_struct> variable_table;
 vector<label_struct> label_table;

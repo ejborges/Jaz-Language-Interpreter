@@ -48,7 +48,7 @@ extern std::string instruction;
 extern std::string parameter;
 extern unsigned int program_line_number;
 extern unsigned int scope_level;
-extern std::stack<int> program_line_number_stack;
+extern std::stack<unsigned int> program_line_number_stack;
 extern std::stack<int> integer_stack;
 
 struct variable_struct {
