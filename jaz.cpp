@@ -118,7 +118,26 @@ string get_instruction(string code_line){
 }
 
 string get_parameter(string code_line){
-
+    string temp = "";
+    bool gotInstruction = false;
+    for(int i = 0; i < code_line.length(); i++){
+        if(!gotInstruction)
+        {
+            if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
+            temp += code_line[i];
+            if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) 
+            {
+                gotInstruction = true;    
+                temp = "";
+            }
+        }
+        else temp += code_line[i];
+    }
+    if (!gotInstruction)
+    {
+        return "";
+    }
+    return temp;
 }
 
 void find_labels(){
