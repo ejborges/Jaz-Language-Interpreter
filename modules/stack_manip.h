@@ -64,6 +64,7 @@
 
 #ifndef JAZ_INTERPRETER_STACK_MANIP_H
 #define JAZ_INTERPRETER_STACK_MANIP_H
+
 #include "working_data.h"
 
 void push();

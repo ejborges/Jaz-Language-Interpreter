@@ -69,35 +69,40 @@
 
 void push()
 {
-	string::size_type sz;
-	int decVal;
-	try
-	{
-		decVal = stoi(parameter, &sz);
-	}
-	catch (const invalid_argument& ia)
-	{
-		error("Wrong input at line " + to_string(program_line_number+1) + " with error: " + ia.what());
-	}
-	catch (...)
-	{
-		error("Wrong input at line " + to_string(program_line_number+1));
-	}
-	
-	integer_stack.push(decVal);
-	// if (parameter.length() == 0) 
-	// {
-	// 	cout << "Bad value to push" << endl;
-	// 	halt();
-	// }
-	// for (int i = 0; i < parameter.length(); ++i) //accounts for multiple digit values
-	// {
-	// 	if (parameter >= zero && parameter <= nine)
-	// 	{
-	// 		exponent = (parameter.length()-1-i);
-	// 		temp += (parameter[i] - zero)*(pow(base, exponent)); //converts char to int value
-	// 	}
-	// }
+    // check parameter for correctness
+    // parameter must have length of 1 or more,
+    // only have numerical characters and the '-' char at beginning
+    // not exceed the +- value range of signed int type
+    if(parameter.length() == 0){
+        error("no parameter to push to integer_stack");
+        return;
+    }
+    if(parameter.length() == 1 && (parameter[0] < '0' || parameter[0] > '9')){
+        error("invalid parameter '" + parameter + "' to push to integer_stack");
+        return;
+    }
+    for(int i = 0; i < parameter.length(); i++){
+        if(i == 0 && parameter[0] != '-' && (parameter[0] < '0' || parameter[0] > '9')){
+            error("invalid parameter '" + parameter + "' to push to integer_stack");
+            return;
+        }
+        if(i != 0 && (parameter[i] < '0' || parameter[i] > '9')){
+            error("invalid parameter '" + parameter + "' to push to integer_stack");
+            return;
+        }
+    }
+    int value_to_push;
+    try{
+        value_to_push = stoi(parameter);
+    }
+    catch(...){
+        error("parameter value '" + parameter + "' out of integer range");
+        return;
+    }
+
+    integer_stack.push(value_to_push);
+
+//    cout << "\tpushed " << value_to_push << " to integer_stack from .jaz line" << program_line_number+1 << endl;
 }
 void push_value()
 {
@@ -111,10 +116,10 @@ void pop()
 {
 	if (integer_stack.empty())
 	{
-		cout << "Empty stack you fool at line number: " << program_line_number+1 << endl;
+        error("popped empty integer_stack");
 		return;
 	}
-	cout << integer_stack.top() << " was popped from the integer stack" << endl;
+//	cout << integer_stack.top() << " was popped from the integer stack" << endl;
 	integer_stack.pop();
 }
 void set_value()

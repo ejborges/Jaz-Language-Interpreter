@@ -44,6 +44,8 @@
 
 using namespace std;
 
+bool had_error = false;
+
 // 1. Analyze arguments for correctness
 // 2. Open .jaz file
 // 3. Create or open the .out file and discard all previous contents
@@ -176,7 +178,7 @@ void find_labels(){
 void read_line(){
     if(program_line_number >= file_lines_length)
         error("program_line_number out of scope; must be between [0.." +
-                      to_string(file_lines_length) + ") but is " + to_string(program_line_number));
+                      to_string(file_lines_length) + ") but is " + to_string(program_line_number) + ";");
     else {
         instruction = get_instruction(file_lines[program_line_number]);
         parameter = get_parameter(file_lines[program_line_number]);
@@ -232,7 +234,7 @@ void execute_instruction(){
     else if (instruction.compare("show") == 0)      show();
 
     else if (instruction.compare("") == 0)          ; // do nothing
-    else {error("unknown instruction '" + instruction + "' on line " + to_string(program_line_number+1)); return;}
+    else {error("unknown instruction '" + instruction + "'"); return;}
 
     if(program_line_number < (file_lines_length - 1)) program_line_number++;
     else continue_main_loop = false;
@@ -241,8 +243,9 @@ void execute_instruction(){
 // Print out an error message to the
 // console and signal the main loop to quit
 void error(string message){
-    cout << "Error:\n\t\t" << message << endl;
+    cout << "Error:\n\t\t" << message << " in " << file << " line " << program_line_number+1 << endl;
     continue_main_loop = false;
+    had_error = true;
 }
 
 // Perform any cleanup
@@ -250,4 +253,5 @@ void error(string message){
 // the interpreter
 void cleanup(){
     out_file.close();
+    if(!had_error) cout << "\n\tJaz program ran successfully" << endl;
 }

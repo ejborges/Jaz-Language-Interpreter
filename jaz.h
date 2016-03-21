@@ -51,6 +51,7 @@
 #include "modules/subprogram_ctrl.h"
 #include "modules/working_data.h"
 
+extern bool had_error;
 void init(int argc, char* argv[]);
 std::string get_instruction(std::string code_line);
 std::string get_parameter(std::string code_line);
