@@ -159,5 +159,37 @@ void read_line(){
 }
 
 void execute_instruction(){
-
+    switch (instruction)
+    case "push" : push(); break;
+    case "rvalue" : push_value(); break;
+    case "lvalue" : push_address(); break;
+    case "pop" : pop(); break;
+    case ":=" : set_value(); break;
+    case "copy" : copy(); break;
+    case "label" : check_label(); break;
+    case "goto" : goto_label(); break;
+    case "gofalse" : go_false(); break;
+    case "gotrue" : go_true(); break;
+    case "halt" : halt(); break;
+    case "+" : add(); break;
+    case "-" : sub(); break;
+    case "*" : mul(); break;
+    case "/" : div(); break;
+    case "div" : mod(); break;
+    case "&" : bitwise_and(); break;
+    case "!" : bitwise_bang(); break;
+    case "|" : bitwise_or(); break;
+    case "<>" : not_equal(); break;
+    case "<=" : less_than_or_equal(); break;
+    case ">=" : greater_than_or_equal(); break;
+    case "<" : less_than(); break;
+    case ">" : greater_than(); break;
+    case "=" : equal(); break;
+    case "begin" : begin(); break;
+    case "end" : end(); break;
+    case "return" : returnFromCall(); break;
+    case "call" : call(); break;
+    case "print" : cout << integer_stack.pop() << endl; break;
+    case "show" : cout << parameter << endl; break;
+    default ; //do nothing (blank line)
 }
