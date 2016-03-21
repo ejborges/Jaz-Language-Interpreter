@@ -159,39 +159,35 @@ void read_line(){
 }
 
 void execute_instruction(){
-    switch (instruction)
-    {
-        case "push" : push(); break;
-        case "rvalue" : push_value(); break;
-        case "lvalue" : push_address(); break;
-        case "pop" : pop(); break;
-        case ":=" : set_value(); break;
-        case "copy" : copy(); break;
-        case "label" : check_label(); break;
-        case "goto" : goto_label(); break;
-        case "gofalse" : go_false(); break;
-        case "gotrue" : go_true(); break;
-        case "halt" : halt(); break;
-        case "+" : add(); break;
-        case "-" : sub(); break;
-        case "*" : mul(); break;
-        case "/" : div(); break;
-        case "div" : mod(); break;
-        case "&" : bitwise_and(); break;
-        case "!" : bitwise_bang(); break;
-        case "|" : bitwise_or(); break;
-        case "<>" : not_equal(); break;
-        case "<=" : less_than_or_equal(); break;
-        case ">=" : greater_than_or_equal(); break;
-        case "<" : less_than(); break;
-        case ">" : greater_than(); break;
-        case "=" : equal(); break;
-        case "begin" : begin(); break;
-        case "end" : end(); break;
-        case "return" : returnFromCall(); break;
-        case "call" : call(); break;
-        case "print" : cout << integer_stack.pop() << endl; break;
-        case "show" : cout << parameter << endl; break;
-        default ; //do nothing (blank line)
-    }
+        if (instruction.compare("push") == 0) push();
+        else if (instruction.compare("rvalue") == 0) push_value();
+        else if (instruction.compare("lvalue") == 0) push_address();
+        else if (instruction.compare("pop") == 0) pop();
+        else if (instruction.compare(":=") == 0)set_value();
+        else if (instruction.compare("copy") == 0) copy();
+        else if (instruction.compare("label") == 0) check_label();
+        else if (instruction.compare("goto") == 0) goto_label();
+        else if (instruction.compare("gofalse") == 0) go_false();
+        else if (instruction.compare("gotrue") == 0) go_true();
+        else if (instruction.compare("halt") == 0) halt();
+        else if (instruction.compare("+") == 0) add();
+        else if (instruction.compare("-") == 0) sub();
+        else if (instruction.compare("*") == 0) mul();
+        else if (instruction.compare("/") == 0) div();
+        else if (instruction.compare("div") == 0) mod();
+        else if (instruction.compare("&") == 0) bitwise_and();
+        else if (instruction.compare("!") == 0) bitwise_bang();
+        else if (instruction.compare("|") == 0) bitwise_or();
+        else if (instruction.compare("<>") == 0) not_equal();
+        else if (instruction.compare("<=") == 0) less_than_or_equal();
+        else if (instruction.compare(">=") == 0) greater_than_or_equal();
+        else if (instruction.compare("<") == 0) less_than();
+        else if (instruction.compare(">") == 0) greater_than();
+        else if (instruction.compare("=") == 0) equal();
+        else if (instruction.compare("begin") == 0) begin();
+        else if (instruction.compare("end") == 0) end();
+        else if (instruction.compare("return") == 0) returnFromCall();
+        else if (instruction.compare("call") == 0) call();
+        else if (instruction.compare("print") == 0) cout << integer_stack.pop() << endl;
+        else if (instruction.compare("show") == 0) cout << parameter << endl;
 }
