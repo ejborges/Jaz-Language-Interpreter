@@ -62,11 +62,42 @@
  *              values of the stack being equal.
  */
 
+#include <iostream>
 #include "stack_manip.h"
+
+ using namespace std;
 
 void push()
 {
-
+	string::size_type sz;
+	int decVal;
+	try
+	{
+		decVal = stoi(parameter, &sz);
+	}
+	catch (const invalid_argument& ia)
+	{
+		error("Wrong input at line " + to_string(program_line_number+1) + " with error: " + ia.what());
+	}
+	catch (...)
+	{
+		error("Wrong input at line " + to_string(program_line_number+1));
+	}
+	
+	integer_stack.push(decVal);
+	// if (parameter.length() == 0) 
+	// {
+	// 	cout << "Bad value to push" << endl;
+	// 	halt();
+	// }
+	// for (int i = 0; i < parameter.length(); ++i) //accounts for multiple digit values
+	// {
+	// 	if (parameter >= zero && parameter <= nine)
+	// 	{
+	// 		exponent = (parameter.length()-1-i);
+	// 		temp += (parameter[i] - zero)*(pow(base, exponent)); //converts char to int value
+	// 	}
+	// }
 }
 void push_value()
 {
@@ -78,7 +109,13 @@ void push_address()
 }
 void pop()
 {
-
+	if (integer_stack.empty())
+	{
+		cout << "Empty stack you fool at line number: " << program_line_number+1 << endl;
+		return;
+	}
+	cout << integer_stack.top() << " was popped from the integer stack" << endl;
+	integer_stack.pop();
 }
 void set_value()
 {
