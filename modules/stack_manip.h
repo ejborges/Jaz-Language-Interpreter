@@ -34,28 +34,30 @@
  *          and popping items that are currently on the stack, duplicate what
  *          is currently on the top of the stack and push a copy of the top value.
  *
- *          push(int value)
- *              Takes in an integer value and pushes the it onto the integer_stack.
+ *          push()
+ *              Takes the global parameter variable as an integer value and pushes
+ *              it onto the integer_stack.
  *
- *          push_value(string variable)
- *              Takes in a variable name, looks up its integer value in the
- *              variable_table, and pushes the value onto the integer_stack.
+ *          push_value()
+ *              Takes the global parameter variable as a variable name, looks up its
+ *              integer value in the variable_table, and pushes the value onto the
+ *              integer_stack.
  *
- *          push_address(string variable)
- *              Takes in a variable name, looks up its address in the variable_table,
- *              and pushes the value onto the integer_stack.
+ *          push_address()
+ *              Takes the global parameter variable as a variable name, looks up its
+ *              address in the variable_table, and pushes the value onto the integer_stack.
  *
- *          pop(void)
+ *          pop()
  *              Removes the top value of the stack and throws it away without being
  *              used.
  *
- *          set_value(void)
+ *          set_value()
  *              Pops the top two values from the integer_stack (the first value popped
  *              should should be an integer value and the second value popped should
  *              be an address) and, using the variable_table, places the value from the
  *              first popped into the address of the second popped.
  *
- *          copy(void)
+ *          copy()
  *              Copies the top of the integer_stack and pushes it resulting in the top two
  *              values of the stack being equal.
  */

@@ -41,9 +41,11 @@
 
 extern std::string file;
 extern std::string filename;
-extern std::string *file_lines;
+//extern std::string *file_lines;
+extern std::vector<std::string> file_lines;
 extern unsigned int file_lines_length;
 
+extern bool continue_main_loop;
 extern std::string instruction;
 extern std::string parameter;
 extern unsigned int program_line_number;
@@ -65,5 +67,7 @@ struct label_struct {
 
 extern std::vector<variable_struct> variable_table;
 extern std::vector<label_struct> label_table;
+
+extern void error(std::string message);
 
 #endif //JAZ_INTERPRETER_WORKING_DATA_H

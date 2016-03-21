@@ -44,6 +44,11 @@
 
 using namespace std;
 
+// 1. Analyze arguments for correctness
+// 2. Open .jaz file
+// 3. Create or open the .out file and discard all previous contents
+// 4. Get the number of lines in the file
+// 5. Load .jaz file lines into file_lines vector
 void init(int argc, char* argv[]){
 
     // Analyze arguments for correctness
@@ -79,34 +84,44 @@ void init(int argc, char* argv[]){
         exit(1);
     }
 
+    // Create or open the .out file and discard all previous contents
+    out_file.open(filename + ".out", ofstream::trunc);
+    if(out_file.fail()){
+        cout << "Error opening file " << filename << ".out";
+        exit(1);
+    }
+
     // Get the number of lines in the file
     // http://stackoverflow.com/a/3072840
-    file_lines_length = (int)count(istreambuf_iterator<char>(in_file), istreambuf_iterator<char>(), '\n');
+    file_lines_length = (unsigned int)count(istreambuf_iterator<char>(in_file), istreambuf_iterator<char>(), '\n');
     in_file.seekg(0, in_file.beg); // may need to return to beginning of file
     file_lines_length++; // just in case the last line didn't end with a newline '\n'
-#ifdef DEBUG_TEXT
+    #ifdef DEBUG_TEXT
     cout << "Number of lines in file " << file << " = " << file_lines_length << endl;
-#endif
+    #endif
 
-    // Initialize array
-    file_lines = new string[file_lines_length];
-    for(int i = 0; i < file_lines_length; i++) file_lines[i] = "";
-
-    // Load .jaz file lines into array
+    // Load .jaz file lines into file_lines vector
+    string temp;
     for(int i = 0; i < file_lines_length; i++){
-        getline(in_file, file_lines[i]);
+        getline(in_file, temp);
+        file_lines.push_back(temp);
         if(in_file.fail() && !in_file.eof()){
             cout << "Error reading the file " << file;
             exit(1);
         }
-#ifdef DEBUG_TEXT
-        cout << "file_lines[" << i << "] = " << file_lines[i] << endl;
-#endif
     }
 
     in_file.close();
+
+#ifdef DEBUG_TEXT
+    for(int i = 0; i < file_lines_length; i++)
+        cout << "file_lines[" << i << "] = " << file_lines[i] <<
+        "\n\t\tinstruction = '" << get_instruction(file_lines[i]) << "'" <<
+        "\n\t\t  parameter = '" << get_parameter(file_lines[i]) << "'" << endl;
+#endif
 }
 
+// Given a line of Jaz code, return the instruction
 string get_instruction(string code_line){
     string temp = "";
     for(int i = 0; i < code_line.length(); i++){
@@ -117,6 +132,7 @@ string get_instruction(string code_line){
     return temp;
 }
 
+// Given a line of Jaz code, return the parameter
 string get_parameter(string code_line){
     string temp = "";
     bool gotInstruction = false;
@@ -140,6 +156,8 @@ string get_parameter(string code_line){
     return temp;
 }
 
+// Scan through the entire .jaz file and note the name
+// and line number of each label
 void find_labels(){
     for(unsigned int i = 0; i < file_lines_length; i++){
         if(get_instruction(file_lines[i]).compare("label") == 0) {
@@ -150,44 +168,86 @@ void find_labels(){
     }
 #ifdef DEBUG_TEXT
     for(int i = 0; i < label_table.size(); i++)
-        cout << "label '" << label_table[i].label_name << "' on line " << label_table[i].line_number << endl;
+        cout << "label '" << label_table[i].label_name << "' on line " << label_table[i].line_number+1 << endl;
 #endif
 }
 
+// Get the instruction and parameter from the current Jaz code line
 void read_line(){
-
+    if(program_line_number >= file_lines_length)
+        error("program_line_number out of scope; must be between [0.." +
+                      to_string(file_lines_length) + ") but is " + to_string(program_line_number));
+    else {
+        instruction = get_instruction(file_lines[program_line_number]);
+        parameter = get_parameter(file_lines[program_line_number]);
+    }
 }
 
+// Depending on the instruction, call the appropriate function
 void execute_instruction(){
-        if (instruction.compare("push") == 0) push();
-        else if (instruction.compare("rvalue") == 0) push_value();
-        else if (instruction.compare("lvalue") == 0) push_address();
-        else if (instruction.compare("pop") == 0) pop();
-        else if (instruction.compare(":=") == 0)set_value();
-        else if (instruction.compare("copy") == 0) copy();
-        else if (instruction.compare("label") == 0) check_label();
-        else if (instruction.compare("goto") == 0) goto_label();
-        else if (instruction.compare("gofalse") == 0) go_false();
-        else if (instruction.compare("gotrue") == 0) go_true();
-        else if (instruction.compare("halt") == 0) halt();
-        else if (instruction.compare("+") == 0) add();
-        else if (instruction.compare("-") == 0) sub();
-        else if (instruction.compare("*") == 0) mul();
-        else if (instruction.compare("/") == 0) div();
-        else if (instruction.compare("div") == 0) mod();
-        else if (instruction.compare("&") == 0) bitwise_and();
-        else if (instruction.compare("!") == 0) bitwise_bang();
-        else if (instruction.compare("|") == 0) bitwise_or();
-        else if (instruction.compare("<>") == 0) not_equal();
-        else if (instruction.compare("<=") == 0) less_than_or_equal();
-        else if (instruction.compare(">=") == 0) greater_than_or_equal();
-        else if (instruction.compare("<") == 0) less_than();
-        else if (instruction.compare(">") == 0) greater_than();
-        else if (instruction.compare("=") == 0) equal();
-        else if (instruction.compare("begin") == 0) begin();
-        else if (instruction.compare("end") == 0) end();
-        else if (instruction.compare("return") == 0) returnFromCall();
-        else if (instruction.compare("call") == 0) call();
-        else if (instruction.compare("print") == 0) cout << integer_stack.pop() << endl;
-        else if (instruction.compare("show") == 0) cout << parameter << endl;
+
+    // stack manipulation instructions
+         if (instruction.compare("push") == 0)      push();
+    else if (instruction.compare("rvalue") == 0)    push_value();
+    else if (instruction.compare("lvalue") == 0)    push_address();
+    else if (instruction.compare("pop") == 0)       pop();
+    else if (instruction.compare(":=") == 0)        set_value();
+    else if (instruction.compare("copy") == 0)      copy();
+
+    // control flow instructions
+    else if (instruction.compare("label") == 0)     check_label();
+    else if (instruction.compare("goto") == 0)      goto_label();
+    else if (instruction.compare("gofalse") == 0)   go_false();
+    else if (instruction.compare("gotrue") == 0)    go_true();
+    else if (instruction.compare("halt") == 0)      halt();
+
+    // arithmetic operator instructions
+    else if (instruction.compare("+") == 0)         add();
+    else if (instruction.compare("-") == 0)         sub();
+    else if (instruction.compare("*") == 0)         mul();
+    else if (instruction.compare("/") == 0)         div();
+    else if (instruction.compare("div") == 0)       mod();
+
+    // logical operator instructions
+    else if (instruction.compare("&") == 0)         bitwise_and();
+    else if (instruction.compare("!") == 0)         bitwise_bang();
+    else if (instruction.compare("|") == 0)         bitwise_or();
+
+    // relational operator instructions
+    else if (instruction.compare("<>") == 0)        not_equal();
+    else if (instruction.compare("<=") == 0)        less_than_or_equal();
+    else if (instruction.compare(">=") == 0)        greater_than_or_equal();
+    else if (instruction.compare("<") == 0)         less_than();
+    else if (instruction.compare(">") == 0)         greater_than();
+    else if (instruction.compare("=") == 0)         equal();
+
+    // subprogram control instructions
+    else if (instruction.compare("begin") == 0)     begin();
+    else if (instruction.compare("end") == 0)       end();
+    else if (instruction.compare("return") == 0)    returnFromCall();
+    else if (instruction.compare("call") == 0)      call();
+
+    // output instructions
+    else if (instruction.compare("print") == 0)     print();
+    else if (instruction.compare("show") == 0)      show();
+
+    else if (instruction.compare("") == 0)          ; // do nothing
+    else {error("unknown instruction '" + instruction + "' on line " + to_string(program_line_number+1)); return;}
+
+    if(program_line_number < (file_lines_length - 1)) program_line_number++;
+    else continue_main_loop = false;
+}
+
+// Print out an error message to the
+// console and signal the main loop to quit
+void error(string message){
+    cout << "Error:\n\t\t" << message << endl;
+    continue_main_loop = false;
+}
+
+// Perform any cleanup
+// before terminating
+// the interpreter
+void cleanup(){
+    out_file.close();
 }

@@ -38,13 +38,15 @@ using namespace std;
 
 string file;
 string filename;
-string *file_lines;
+//string *file_lines;
+vector<string> file_lines;
 unsigned int file_lines_length;
 
-string instruction;
-string parameter;
-unsigned int program_line_number;
-unsigned int scope_level;
+bool continue_main_loop = true;
+string instruction = "";
+string parameter = "";
+unsigned int program_line_number = 0;
+unsigned int scope_level = 0;
 stack<unsigned int> program_line_number_stack;
 stack<int> integer_stack;
 

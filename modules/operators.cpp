@@ -35,27 +35,27 @@
  *
  *          Arithmetic Operators
  *
- *              add(void)
+ *              add()
  *                  Pops the top two integers from the integer_stack,
  *                  adds them, and pushes the result to the integer_stack.
  *
- *              sub(void)
+ *              sub()
  *                  Pops the top two integers from the integer_stack,
  *                  subtracts the first int popped from the second int popped,
  *                  and pushes the result to the integer_stack.
  *                  stack_top = second_popped - first_popped
  *
- *              mul(void)
+ *              mul()
  *                  Pops the top two integers from the integer_stack,
  *                  multiplies them, and pushes the result to the integer_stack.
  *
- *              div(void)
+ *              div()
  *                  Pops the top two integers from the integer_stack,
  *                  divides the second int popped by the first int popped,
  *                  and pushes the quotient to the integer_stack.
  *                  stack_top = second_popped / first_popped
  *
- *              mod(void)
+ *              mod()
  *                  Pops the top two integers from the integer_stack,
  *                  divides the second int popped by the first int popped,
  *                  and pushes the remainder to the integer_stack.
@@ -63,46 +63,46 @@
  *
  *          Logical Operators
  *
- *              bitwise_and(void)
+ *              bitwise_and()
  *                  Pops the top two integers from the integer_stack,
  *                  bitwise AND them, and pushes the result to the integer_stack.
  *
- *              bitwise_bang(void)
+ *              bitwise_bang()
  *                  Pops the top integer from the integer_stack,
  *                  bitwise NOT it, and pushes the result to the integer_stack.
  *
- *              bitwise_or(void)
+ *              bitwise_or()
  *                  Pops the top two integers from the integer_stack,
  *                  bitwise OR them, and pushes the result to the integer_stack.
  *
  *          Relational Operators
  *
- *              not_equal(void)
+ *              not_equal()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the values are not equal or
  *                  pushes a 0 to the integer_stack if the values are equal.
  *
- *              less_than_or_equal(void)
+ *              less_than_or_equal()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the second int popped is less
  *                  than or equal to the first int popped, pushes a 0 otherwise.
  *
- *              greater_than_or_equal(void)
+ *              greater_than_or_equal()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the second int popped is greater
  *                  than or equal to the first int popped, pushes a 0 otherwise.
  *
- *              less_than(void)
+ *              less_than()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the second int popped is less
  *                  than to the first int popped, pushes a 0 otherwise.
  *
- *              greater_than(void)
+ *              greater_than()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the second int popped is greater
  *                  than to the first int popped, pushes a 0 otherwise.
  *
- *              equal(void)
+ *              equal()
  *                  Pops the top two integers from the integer_stack and pushes
  *                  a 1 to the integer_stack if the values are equal or pushes
  *                  a 0 to the integer_stack if the values are not equal.

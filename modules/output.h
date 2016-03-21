@@ -1,4 +1,4 @@
-/* This is the subprogram control instruction library for the Jaz language interpreter
+/* This is the output instruction library for the Jaz language interpreter
  *
  * ----------------------------------------------------------
  *
@@ -32,27 +32,15 @@
  *
  */
 
-#include "subprogram_ctrl.h"
+#ifndef JAZ_INTERPRETER_OUTPUT_H
+#define JAZ_INTERPRETER_OUTPUT_H
 
-void begin()
-{
-	//Any variable declared in here will need a scope level
-	// 1 higher than the current scope level.
-}
+#include <fstream>
+#include "working_data.h"
 
-void end()
-{
-	//This will signal the end of a subroutine call.
-}
+extern std::ofstream out_file;
 
-void returnFromCall()
-{
-	//This will decrement the current scope level so the program
-	// knows what variables it has access to.
-}
+void print();
+void show();
 
-void call()
-{
-	//We use the input label to jump to the subroutine specified
-	// by the label parameter and increment the current scope level.
-}
+#endif //JAZ_INTERPRETER_OUTPUT_H

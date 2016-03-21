@@ -44,19 +44,17 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-    // Initialization
     init(argc, argv);
 
     find_labels();
 
-    bool next_line = true;
-    while(next_line){
+    while(continue_main_loop){
         read_line();
+        if(!continue_main_loop) break;
         execute_instruction();
-        next_line = false;
     }
 
-    delete [] file_lines;
+    cleanup();
 
     return 0;
 }

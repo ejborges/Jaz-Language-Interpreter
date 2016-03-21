@@ -35,31 +35,31 @@
  *          control flow instructions that affect the Jaz code's order of
  *          execution.
  *
- *          check_label(string label)
- *              Takes in a string parameter as the label name and checks it
- *              and the current line number the execution cursor is at
- *              against what is already saved in the label_table.
+ *          check_label()
+ *              Takes the global parameter variable as the label name and
+ *              checks it and the current line number the execution cursor
+ *              is at against what is already saved in the label_table.
  *
- *          goto_label(string target)
- *              Takes in a string parameter as the target label to jump to and
- *              moves the execution cursor to the line in the file where the
- *              label_table says the target label exists.
+ *          goto_label()
+ *              Takes the global parameter variable as the target label to
+ *              jump to and moves the execution cursor to the line in the
+ *              file where the label_table says the target label exists.
  *
- *          go_false(string target)
- *              Takes in a string parameter as the target label to jump to
- *              and moves the execution cursor to the line in the file where
- *              the label_table says the target label exists if the previous
- *              relational value returned false (aka the top value on the
- *              integer_stack is an integer with value zero).
+ *          go_false()
+ *              Takes the global parameter variable as the target label to
+ *              jump to and moves the execution cursor to the line in the
+ *              file where the label_table says the target label exists if
+ *              the previous relational value returned false (aka the top
+ *              value on the integer_stack is an integer with value zero).
  *
- *          go_true(string target)
- *              Takes in a string parameter as the target label to jump to
- *              and moves the execution cursor to the line in the file where
- *              the label_table says the target label exists if the previous
- *              relational value returned true(aka the top value on the
- *              integer_stack is an integer with value one).
+ *          go_true()
+ *              Takes the global parameter variable as the target label to
+ *              jump to and moves the execution cursor to the line in the
+ *              file where the label_table says the target label exists if
+ *              the previous relational value returned true(aka the top
+ *              value on the integer_stack is an integer with value one).
  *
- *          halt(void)
+ *          halt()
  *              Defines the end of the Jaz program. It can be placed anywhere
  *              in the Jaz code and once executed will make the Jaz interpreter
  *              terminate as a result.
@@ -67,13 +67,13 @@
 
 #ifndef JAZ_INTERPRETER_CONTROL_FLOW_H
 #define JAZ_INTERPRETER_CONTROL_FLOW_H
-#include <string>
+
 #include "working_data.h"
 
-void check_label(std::string label);
-void goto_label(std::string target);
-void go_false(std::string target);
-void go_true(std::string target);
+void check_label();
+void goto_label();
+void go_false();
+void go_true();
 void halt();
 
 #endif //JAZ_INTERPRETER_CONTROL_FLOW_H

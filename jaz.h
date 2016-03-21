@@ -41,11 +41,12 @@
 #define JAZ_INTERPRETER_JAZ_H
 
 #define cout cout<<"\t"
-#define DEBUG_TEXT
+//#define DEBUG_TEXT
 
 #include <string>
 #include "modules/control_flow.h"
 #include "modules/operators.h"
+#include "modules/output.h"
 #include "modules/stack_manip.h"
 #include "modules/subprogram_ctrl.h"
 #include "modules/working_data.h"
@@ -53,6 +54,7 @@
 void init(int argc, char* argv[]);
 std::string get_instruction(std::string code_line);
 std::string get_parameter(std::string code_line);
+void cleanup();
 
 void find_labels();
 void read_line();
