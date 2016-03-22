@@ -69,21 +69,38 @@
 
 void check_label()
 {
-
+	//do nothing
 }
+
 void goto_label()
 {
-
+	for (int i = 0; i < lable_table.size(); ++i)
+	{
+		if (parameter.compare(label_table[i].label_name) == 0) 
+		{
+			program_line_number = label_table[i].line_number;
+			break;
+		}
+	}
 }
+
 void go_false()
 {
-
+	if (integer_stack.top() == 0)
+	{
+		goto_label();
+	}
 }
+
 void go_true()
 {
-
+	if (integer_stack.top() == 1)
+	{
+		goto_label();
+	}
 }
+
 void halt()
 {
-
+	continue_main_loop = false;
 }
