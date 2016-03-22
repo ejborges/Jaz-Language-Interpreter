@@ -129,7 +129,6 @@ string get_instruction(string code_line){
     for(int i = 0; i < code_line.length(); i++){
         if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
         if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n' || code_line[i] == 32 || code_line[i] == 13) && temp.length() != 0) break;
-        if((code_line[i] ))
         temp += code_line[i];
     }
     return temp;
