@@ -46,7 +46,20 @@ void begin()
 //This will signal the end of a subroutine call.
 void end()
 {
-	if (current_scope_level > 0) current_scope_level--;
+	if (current_scope_level > 0)
+	{
+		for (int i = 0; i < variable_table.size(); ++i)
+		{
+			if (variable_table[i].scope == current_scope_level)
+			{
+				variable_table[i].name = "";
+				variable_table[i].address = -1;
+				variable_table[i].value = 0;
+				variable_table[i].scope = -1;
+			}
+		}
+		current_scope_level--;
+	} 
 	else error("can't end, too low of scope, value = " + to_string(current_scope_level));
 }
 
@@ -61,6 +74,16 @@ void returnFromCall()
 	program_line_number = program_line_number_stack.top();
 	program_line_number_stack.pop();
 
+	for (int i = 0; i < variable_table.size(); ++i)
+	{
+		if (variable_table[i].scope == current_scope_level)
+		{
+			variable_table[i].name = "";
+			variable_table[i].address = -1;
+			variable_table[i].value = 0;
+			variable_table[i].scope = -1;
+		}
+	}
 	if (current_scope_level > 0) current_scope_level--;
 	else error("can't returnFromCall, too low of scope, value = " + to_string(current_scope_level));
 
