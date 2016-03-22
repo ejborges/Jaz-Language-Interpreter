@@ -168,7 +168,6 @@ string remove_surrounding_whitespace(string s){
         else end = i;
     }
     for(int i = start; i < end+1; i++) temp += s[i];
-    cout << "remove whitespace string = '" << s << "'; temp = '" << temp << "'" << endl;
     return temp;
 }
 

@@ -128,7 +128,6 @@ void pop()
         error("popped empty integer_stack");
 		return;
 	}
-//	cout << integer_stack.top() << " was popped from the integer stack" << endl;
 	integer_stack.pop();
 }
 
