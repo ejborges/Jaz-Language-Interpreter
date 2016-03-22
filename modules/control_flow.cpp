@@ -67,6 +67,8 @@
 
 #include "control_flow.h"
 
+using namespace std;
+
 void check_label()
 {
 	//do nothing
@@ -74,6 +76,10 @@ void check_label()
 
 void goto_label()
 {
+    if(parameter.length() == 0) {
+        error("no parameter specified; expected label name");
+        return;
+    }
 	if (label_table.size() == 0)
 	{
 		error("no labels exist");
@@ -84,6 +90,10 @@ void goto_label()
 	{
 		if (parameter.compare(label_table[i].label_name) == 0) 
 		{
+#ifdef TRACE_CODE
+            cout << "line " << program_line_number << ": goto " <<
+                    parameter << " in line " << label_table[i].line_number << "\n";
+#endif
 			program_line_number = label_table[i].line_number;
 			return;
 		}
@@ -103,6 +113,12 @@ void go_false()
 	{
 		goto_label();
 	}
+    else{
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": gofalse did not jump; stack was "
+        << integer_stack.top() << "\n";
+#endif
+    }
 	integer_stack.pop();
 }
 
@@ -117,10 +133,23 @@ void go_true()
 	{
 		goto_label();
 	}
+    else{
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": gotrue did not jump; stack was "
+        << integer_stack.top() << "; popped stack\n";
+#endif
+    }
 	integer_stack.pop();
 }
 
 void halt()
 {
+    if(parameter.length() != 0) {
+        error("instruction halt does not take a parameter");
+        return;
+    }
 	continue_main_loop = false;
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": halt" << "\n";
+#endif
 }

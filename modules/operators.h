@@ -133,5 +133,6 @@ void less_than();
 void greater_than();
 void equal();
 void prepare_operators();
+void has_parameter(std::string instruction);
 
 #endif //JAZ_INTERPRETER_OPERATORS_H

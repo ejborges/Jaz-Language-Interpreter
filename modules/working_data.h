@@ -38,10 +38,14 @@
 #include <string>
 #include <stack>
 #include <vector>
+#include <iostream>
+
+#define cout cout<<"\t"
+//#define DEBUG_TEXT
+#define TRACE_CODE
 
 extern std::string file;
 extern std::string filename;
-//extern std::string *file_lines;
 extern std::vector<std::string> file_lines;
 extern unsigned int file_lines_length;
 
@@ -59,6 +63,7 @@ struct variable_struct {
     int address;
     int value;
     int scope;
+    int coppied_from_address;
 } extern variable;
 
 struct label_struct {
@@ -72,7 +77,7 @@ extern std::vector<label_struct> label_table;
 extern void error(std::string message);
 extern void warning(std::string message);
 extern bool has_whitespace(std::string s);
-extern int search_variable_table(std::string name);
+extern int search_variable_table(std::string var_name);
 extern bool exists_in_variable_table(int address);
 
 #endif //JAZ_INTERPRETER_WORKING_DATA_H

@@ -40,9 +40,6 @@
 #ifndef JAZ_INTERPRETER_JAZ_H
 #define JAZ_INTERPRETER_JAZ_H
 
-#define cout cout<<"\t"
-//#define DEBUG_TEXT
-
 #include <string>
 #include "modules/control_flow.h"
 #include "modules/operators.h"

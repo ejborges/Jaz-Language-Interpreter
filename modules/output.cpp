@@ -40,14 +40,23 @@ using namespace std;
 ofstream out_file;
 
 void print(){
+	if(parameter.length() != 0) {
+		warning("instruction print does not take a parameter");
+	}
 	if (integer_stack.empty())
 	{
 		error("nothing to print, empty integer_stack");
 		return;
 	}
 	out_file << integer_stack.top() << endl;
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": print; to file '" << integer_stack.top() << "'\n";
+#endif
 }
 
 void show(){
     out_file << parameter << endl;
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": show; to file '" << parameter << "'\n";
+#endif
 }

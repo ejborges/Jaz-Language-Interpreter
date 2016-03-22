@@ -38,7 +38,6 @@ using namespace std;
 
 string file;
 string filename;
-//string *file_lines;
 vector<string> file_lines;
 unsigned int file_lines_length;
 

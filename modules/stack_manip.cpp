@@ -65,7 +65,7 @@
 #include <iostream>
 #include "stack_manip.h"
 
- using namespace std;
+using namespace std;
 
 // push instruction
 void push()
@@ -83,11 +83,6 @@ void push()
         return;
     }
     for(int i = 0; i < parameter.length(); i++){
-    	if (i == (parameter.length()-1) && parameter[i] == ' ')
-    	{
-    		parameter[i] = 0; //removing trailing space
-    		break;
-    	}
         if(i == 0 && parameter[0] != '-' && (parameter[0] < '0' || parameter[0] > '9')){
             error("invalid parameter '" + parameter + "' to push to integer_stack");
             return;
@@ -107,8 +102,9 @@ void push()
     }
 
     integer_stack.push(value_to_push);
-
-//    cout << "\tpushed " << value_to_push << " to integer_stack from .jaz line" << program_line_number+1 << endl;
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": push; pushed " << value_to_push << "\n";
+#endif
 }
 
 // rvalue instruction
@@ -119,24 +115,27 @@ void push_value()
         return;
     }
     int index = search_variable_table(parameter);
-    if(index == -1){ //if not found, initialize a new variable with value 0
-    	variable.name = parameter;
+    if(index == -1){
+        variable.name = parameter;
         variable.address = new_variable_address_value++;
         variable.value = 0;
         variable.scope = current_scope_level;
-        variable_table.push_back(variable);
+        variable.coppied_from_address = -1;
         integer_stack.push(0);
-        
-        // warning("variable '" + parameter + "' does not exist");
-        // cout << "\t\tusing value of 0 in its place" << endl;
-        // integer_stack.push(0);
+        variable_table.push_back(variable);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": rvalue; did not find '"
+        << parameter << "' in table; created it in address " << variable.address << " with scope "
+        << variable.scope << " and pushed value 0 to stack" << "\n";
+#endif
         return;
     }
-    else{
-        if((current_scope_level - variable_table[index].scope) > 1){
-            integer_stack.push(0);
-        }
-        else integer_stack.push(variable_table[index].value);
+    else {
+        integer_stack.push(variable_table[index].value);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": rvalue; found '"
+        << parameter << "' in table; pushed value " << integer_stack.top() << " to stack\n";
+#endif
     }
 }
 
@@ -153,29 +152,50 @@ void push_address()
         variable.address = new_variable_address_value++;
         variable.value = 0;
         variable.scope = current_scope_level;
-        variable_table.push_back(variable);
+        variable.coppied_from_address = -1;
         integer_stack.push(variable.address);
+        variable_table.push_back(variable);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": lvalue; did not find '"
+        << parameter << "' in table; created it in address " << variable.address << " with scope "
+        << variable.scope << " and pushed address " << variable.address << " to stack" << "\n";
+#endif
         return;
     }
     else{
         integer_stack.push(variable_table[index].address);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": lvalue; found '"
+        << parameter << "' in table; pushed address " << integer_stack.top() << " to stack\n";
+#endif
     }
 }
 
 // pop instruction
 void pop()
 {
+    if(parameter.length() != 0) {
+        warning("instruction pop does not take a parameter");
+        return;
+    }
 	if (integer_stack.empty())
 	{
         error("nothing to pop, empty integer_stack");
 		return;
 	}
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": pop; popped " << integer_stack.top() << " from stack\n";
+#endif
 	integer_stack.pop();
 }
 
 // := instruction
 void set_value()
 {
+    if(parameter.length() != 0) {
+        warning("instruction := does not take a parameter");
+        return;
+    }
     if (integer_stack.size() < 2)
     {
         error("not enough elements in the stack to execute instruction");
@@ -186,7 +206,7 @@ void set_value()
     integer_stack.pop();
     int address = integer_stack.top();
     integer_stack.pop();
-    if (!exists_in_variable_table(address))
+    if (!(exists_in_variable_table(address)))
     {
         error("address " + to_string(address) + " does not exist");
         return;
@@ -201,15 +221,28 @@ void set_value()
         return;
     }
     variable_table[address].value = value;
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": :=; set variable " << variable_table[address].name
+    << " with address " << address << " and scope " << variable_table[address].scope
+    << " to a value of " << value << "\n";
+#endif
 }
 
 // copy instruction
 void copy()
 {
+    if(parameter.length() != 0) {
+        warning("instruction copy does not take a parameter");
+        return;
+    }
 	if (integer_stack.empty())
     {
         error("nothing to copy, empty integer_stack");
         return;
     }
     integer_stack.push(integer_stack.top());
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": copy; pushed value " << integer_stack.top()
+    << " to stack\n";
+#endif
 }

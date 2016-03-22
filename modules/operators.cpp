@@ -113,46 +113,79 @@
 
 #include "operators.h"
 
+using namespace std;
+
 int first_popped, second_popped;
 
 void add()
 {
+    has_parameter("+");
 	prepare_operators();
-
-	integer_stack.push(second_popped + first_popped);
+    if(continue_main_loop){
+        integer_stack.push(second_popped + first_popped);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": +; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void sub()
 {
+    has_parameter("-");
 	prepare_operators();
-
-	integer_stack.push(second_popped - first_popped);
+    if(continue_main_loop){
+        integer_stack.push(second_popped - first_popped);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": -; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void mul()
 {
+    has_parameter("*");
 	prepare_operators();
-
-	integer_stack.push(second_popped * first_popped);
+    if(continue_main_loop){
+        integer_stack.push(second_popped * first_popped);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": *; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void div()
 {
+    has_parameter("/");
 	prepare_operators();
-
-	integer_stack.push(second_popped / first_popped);
+    if(continue_main_loop){
+        integer_stack.push(second_popped / first_popped);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": /; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void mod()
 {
+    has_parameter("div");
 	prepare_operators();
-
-	integer_stack.push(second_popped % first_popped);
+    if(continue_main_loop){
+        integer_stack.push(second_popped % first_popped);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": div; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void logic_and()
 {
+    has_parameter("&");
 	prepare_operators();
-
-	integer_stack.push((second_popped != 0 && first_popped != 0) ? 1 : 0);
+    if(continue_main_loop){
+        integer_stack.push((second_popped != 0 && first_popped != 0) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": &; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void logic_bang()
 {
+    has_parameter("!");
 	if (integer_stack.size() < 1)
 	{
 		error("not enough items on the integer_stack");
@@ -160,61 +193,110 @@ void logic_bang()
 	}
 	int popped_value = integer_stack.top();
 	integer_stack.pop();
-
 	integer_stack.push((popped_value == 0) ? 1 : 0);
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": !; popped "
+    << popped_value << " and pushed " << integer_stack.top() << "\n";
+#endif
 }
 void logic_or()
 {
+    has_parameter("|");
 	prepare_operators();
-
-	integer_stack.push((second_popped != 0 || first_popped != 0) ? 1 : 0);
+    if(continue_main_loop){
+        integer_stack.push((second_popped != 0 || first_popped != 0) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": |; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void not_equal()
 {
+    has_parameter("<>");
 	prepare_operators();
-
-	integer_stack.push((second_popped != first_popped) ? 1 : 0);
+    if(continue_main_loop){
+        integer_stack.push((second_popped != first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": <>; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void less_than_or_equal()
 {
+    has_parameter("<=");
 	prepare_operators();
-
-	integer_stack.push((second_popped <= first_popped) ? 1 : 0);
+    if(continue_main_loop){
+        integer_stack.push((second_popped <= first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": <=; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void greater_than_or_equal()
 {
+    has_parameter(">=");
 	prepare_operators();
-
-	integer_stack.push((second_popped >= first_popped) ? 1 : 0);	
+    if(continue_main_loop){
+        integer_stack.push((second_popped >= first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": >=; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void less_than()
 {
+    has_parameter("<");
 	prepare_operators();
-
-	integer_stack.push((second_popped < first_popped) ? 1 : 0);
+    if(continue_main_loop){
+        integer_stack.push((second_popped < first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": <; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void greater_than()
 {
+    has_parameter(">");
 	prepare_operators();
-
-	integer_stack.push((second_popped > first_popped) ? 1 : 0);	
+    if(continue_main_loop){
+        integer_stack.push((second_popped > first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": >; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 void equal()
 {
+    has_parameter("=");
 	prepare_operators();
-
-	integer_stack.push((second_popped == first_popped) ? 1 : 0);	
+	if(continue_main_loop){
+        integer_stack.push((second_popped == first_popped) ? 1 : 0);
+#ifdef TRACE_CODE
+        cout << "line " << program_line_number << ": =; pushed " << integer_stack.top() << "\n";
+#endif
+    }
 }
 
 void prepare_operators()
 {
 	if (integer_stack.size() < 2)
 	{
-		error("not enough items on the integer_stack");
+        error("not enough items on the integer_stack");
 		return;
 	}
 	first_popped = integer_stack.top();
 	integer_stack.pop();
 	second_popped = integer_stack.top();
 	integer_stack.pop();
+#ifdef TRACE_CODE
+    cout << "line " << program_line_number << ": prepare_operators() popped "
+    << first_popped << " and " << second_popped << "\n";
+#endif
+}
+
+void has_parameter(std::string instruction){
+    if(parameter.length() != 0) {
+        warning("instruction " + instruction + " does not take a parameter");
+        return;
+    }
 }

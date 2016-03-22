@@ -115,12 +115,12 @@ void init(int argc, char* argv[]){
 
     in_file.close();
 
-#ifdef DEBUG_TEXT
+    #ifdef DEBUG_TEXT
     for(int i = 0; i < file_lines_length; i++)
         cout << "file_lines[" << i << "] = " << file_lines[i] <<
         "\n\t\tinstruction = '" << get_instruction(file_lines[i]) << "'" <<
         "\n\t\t  parameter = '" << get_parameter(file_lines[i]) << "'" << endl;
-#endif
+    #endif
 }
 
 // Given a line of Jaz code, return the instruction
@@ -128,7 +128,7 @@ string get_instruction(string code_line){
     string temp = "";
     for(int i = 0; i < code_line.length(); i++){
         if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n' || code_line[i] == 32 || code_line[i] == 13) && temp.length() != 0) break;
+        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) break;
         temp += code_line[i];
     }
     return temp;
@@ -167,7 +167,7 @@ string remove_surrounding_whitespace(string s){
         else if(start == -1) start = end = i;
         else end = i;
     }
-    for(int i = start; i < end; i++) temp += s[i];
+    for(int i = start; i < end+1; i++) temp += s[i];
     return temp;
 }
 
@@ -179,19 +179,29 @@ bool has_whitespace(std::string s){
     return false;
 }
 
-// returns the variable_table index for the variable named if it exists in variable_table
+// returns the variable_table index for the variable named if it
+//   exists in variable_table within the current or previous scope
 // returns -1 otherwise
-int search_variable_table(std::string name){
+int search_variable_table(std::string var_name){
     if(variable_table.size() == 0) return -1;
+    if(var_name.size() == 0) return -1;
     for(int i = 0; i < variable_table.size(); i++){
-        if(((variable_table[i]).name).compare(name) == 0) return i;
+        if(variable_table[i].name.compare(var_name) == 0){
+            if((current_scope_level - variable_table[i].scope) > 1) continue;
+//            if((current_scope_level - variable_table[i].scope) <= 1 &&
+//                    (current_scope_level - variable_table[i].scope) >= -1) continue;
+            else return i;
+        }
     }
     return -1;
 }
 
 // returns true if the address exists in variable_table
 bool exists_in_variable_table(int address){
-    return (address >= 0 && address < variable_table.size());
+    if((address >= 0) && (address < variable_table.size())){
+        return variable_table[address].name.size() != 0;
+    }
+    return false;
 }
 
 // Scan through the entire .jaz file and note the name
@@ -209,7 +219,7 @@ void find_labels(){
             }
 
             // check for duplicate labels
-            if(!label_table.empty())
+            if(!(label_table.empty()))
                 for(int j = 0; j < label_table.size(); j++){
                     if(label_name.compare(label_table[j].label_name) == 0){
                         program_line_number = i;
@@ -340,6 +350,7 @@ void warning(string message){
 
 // Perform any cleanup before terminating the interpreter
 void cleanup(){
+    // delete vectors
     out_file.close();
     if(!had_error) cout << "\n\tJaz program ran successfully" << endl;
 }
