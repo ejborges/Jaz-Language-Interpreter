@@ -113,87 +113,108 @@
 
 #include "operators.h"
 
+int first_popped, second_popped;
+
 void add()
 {
-	//1)Pops the top 2 values
-	//2)Adds them
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push(second_popped + first_popped);
 }
 void sub()
 {
-	//1)Pops the top 2 values
-	//2)Subtracts one from the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push(second_popped - first_popped);
 }
 void mul()
 {
-	//1)Pops the top 2 values
-	//2)Multiplies one by the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push(second_popped * first_popped);
 }
 void div()
 {
-	//1)Pops the top 2 values
-	//2)Divides one from the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push(second_popped / first_popped);
 }
 void mod()
 {
-	//1)Pops the top 2 values
-	//2)Performs the modulo operation(%) on one to the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push(second_popped % first_popped);
 }
 void logic_and()
 {
-	//1)Pops the top 2 values
-	//2)Bitwise and(&) one and the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped != 0 && first_popped != 0) ? 1 : 0);
 }
 void logic_bang()
 {
-	//1)Pops the top value
-	//2)Bitwise bangs(!) it
-	//3)Pushes Result to the stack
+	if (integer_stack.size() < 1)
+	{
+		error("not enough items on the integer_stack");
+		return;
+	}
+	int popped_value = integer_stack.top();
+	integer_stack.pop();
+
+	integer_stack.push((popped_value == 0) ? 1 : 0);
 }
 void logic_or()
 {
-	//1)Pops the top 2 values
-	//2)Bitwise or(|) one and the other
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped != 0 || first_popped != 0) ? 1 : 0);
 }
 void not_equal()
 {
-	//1)Pops the top 2 values
-	//2)Checks if they aren't equal (<>)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped != first_popped) ? 1 : 0);
 }
 void less_than_or_equal()
 {
-	//1)Pops the top 2 values
-	//2)Checks if one is less than or equal to the other (<=)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped <= first_popped) ? 1 : 0);
 }
 void greater_than_or_equal()
 {
-	//1)Pops the top 2 values
-	//2)Checks if one is greater than or equal to the other (>=)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped >= first_popped) ? 1 : 0);	
 }
 void less_than()
 {
-	//1)Pops the top 2 values
-	//2)Checks if one is less than the other (<)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped < first_popped) ? 1 : 0);
 }
 void greater_than()
 {
-	//1)Pops the top 2 values
-	//2)Checks if one is greater than the other (>)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped > first_popped) ? 1 : 0);	
 }
 void equal()
 {
-	//1)Pops the top 2 values
-	//2)Checks if they are equal (==)
-	//3)Pushes Result to the stack
+	prepare_operators();
+
+	integer_stack.push((second_popped == first_popped) ? 1 : 0);	
+}
+
+void prepare_operators()
+{
+	if (integer_stack.size() < 2)
+	{
+		error("not enough items on the integer_stack");
+		return;
+	}
+	first_popped = integer_stack.top();
+	integer_stack.pop();
+	second_popped = integer_stack.top();
+	integer_stack.pop();
 }

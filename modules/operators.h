@@ -115,6 +115,8 @@
 #define JAZ_INTERPRETER_OPERATORS_H
 #include "working_data.h"
 
+extern int first_popped;
+extern int second_popped;
 
 void add();
 void sub();
@@ -130,5 +132,6 @@ void greater_than_or_equal();
 void less_than();
 void greater_than();
 void equal();
+void prepare_operators();
 
 #endif //JAZ_INTERPRETER_OPERATORS_H
