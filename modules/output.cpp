@@ -33,7 +33,6 @@
  */
 
 #include <fstream>
-#include <iostream>
 #include "output.h"
 
 using namespace std;
@@ -41,23 +40,12 @@ using namespace std;
 ofstream out_file;
 
 void print(){
-	if (parameter.empty())
+	if (integer_stack.empty())
 	{
-		if (integer_stack.empty())
-		{
-			error("nothing to print, empty integer_stack");
-			return;
-		}
-		out_file << integer_stack.top() << endl;
+		error("nothing to print, empty integer_stack");
+		return;
 	}
-	else if (search_variable_table(parameter) == -1)
-	{
-		out_file << "0" << endl;
-	}
-	else
-	{
-		out_file << variable_table[search_variable_table(parameter)].value << endl;
-	}
+	out_file << integer_stack.top() << endl;
 }
 
 void show(){

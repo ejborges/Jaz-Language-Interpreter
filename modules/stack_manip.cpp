@@ -85,7 +85,7 @@ void push()
     for(int i = 0; i < parameter.length(); i++){
     	if (i == (parameter.length()-1) && parameter[i] == ' ')
     	{
-    		parameter[i] -= parameter[i]; //removing trailing space
+    		parameter[i] = 0; //removing trailing space
     		break;
     	}
         if(i == 0 && parameter[0] != '-' && (parameter[0] < '0' || parameter[0] > '9')){
