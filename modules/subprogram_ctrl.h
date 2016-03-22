@@ -36,6 +36,8 @@
 #define JAZ_INTERPRETER_SUBPROGRAM_CTRL_H
 
 #include "working_data.h"
+#include "control_flow.h"
+#include <string>
 
 void begin();
 void end();

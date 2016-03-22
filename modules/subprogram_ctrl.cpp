@@ -34,25 +34,43 @@
 
 #include "subprogram_ctrl.h"
 
+using namespace std;
+
+//Any variable declared in here will need a scope level
+// 1 higher than the current scope level.
 void begin()
 {
-	//Any variable declared in here will need a scope level
-	// 1 higher than the current scope level.
+	current_scope_level++;
 }
 
+//This will signal the end of a subroutine call.
 void end()
 {
-	//This will signal the end of a subroutine call.
+	if (current_scope_level > 0) current_scope_level--;
+	else error("can't end, too low of scope, value = " + to_string(current_scope_level));
 }
 
+//This will decrement the current scope level so the program
+// knows what variables it has access to.
 void returnFromCall()
 {
-	//This will decrement the current scope level so the program
-	// knows what variables it has access to.
+	if (program_line_number_stack.empty())
+	{
+		error("empty program_line_number_stack, so no clue where to return to");
+	}
+	program_line_number = program_line_number_stack.top();
+	program_line_number_stack.pop();
+
+	if (current_scope_level > 0) current_scope_level--;
+	else error("can't returnFromCall, too low of scope, value = " + to_string(current_scope_level));
+
 }
 
+//We use the input label to jump to the subroutine specified
+// by the label parameter and increment the current scope level.
 void call()
 {
-	//We use the input label to jump to the subroutine specified
-	// by the label parameter and increment the current scope level.
+	current_scope_level++;
+	program_line_number_stack.push(program_line_number);
+	goto_label();
 }
