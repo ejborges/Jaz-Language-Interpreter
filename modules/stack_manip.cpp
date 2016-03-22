@@ -134,11 +134,37 @@ void pop()
 // := instruction
 void set_value()
 {
+    if (integer_stack.size() < 2)
+    {
+        error("not enough elements in the stack to execute instruction");
+        return;
+    }
 
+    int value = integer_stack.top();
+    integer_stack.pop();
+    int address = integer_stack.top();
+    integer_stack.pop();
+    if (!exists_in_variable_table(address))
+    {
+        error("address " + to_string(address) + " does not exist");
+        return;
+    }
+
+    if (!((variable_table[address].scope + 1) == current_scope_level || variable_table[address].scope == current_scope_level))
+    {
+        error("variable " + variable.name + " out of scope");
+        return;
+    }
+    variable_table[address].value = value;
 }
 
 // copy instruction
 void copy()
 {
-	
+	if (integer_stack.empty())
+    {
+        error("nothing in the stack to copy");
+        return;
+    }
+    integer_stack.push(integer_stack.top());
 }
