@@ -45,7 +45,7 @@ void print(){
 		error("nothing to print, empty stack");
 		return;
 	}
-	cout << integer_stack.top() << endl;
+	out_file << integer_stack.top() << endl;
 }
 
 void show(){
