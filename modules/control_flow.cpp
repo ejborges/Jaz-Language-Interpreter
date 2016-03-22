@@ -74,6 +74,12 @@ void check_label()
 
 void goto_label()
 {
+	if (label_table.size() == 0)
+	{
+		error("no lables were created");
+		return;	
+	}
+	
 	for (int i = 0; i < label_table.size(); ++i)
 	{
 		if (parameter.compare(label_table[i].label_name) == 0) 
@@ -86,18 +92,40 @@ void goto_label()
 
 void go_false()
 {
+	if (label_table.size() == 0)
+	{
+		error("no lables were created");
+		return;	
+	}
+	if (integer_stack.size() == 0)
+	{
+		error("no value on integer_stack to check");
+		return;
+	}
 	if (integer_stack.top() == 0)
 	{
 		goto_label();
 	}
+	integer_stack.pop();
 }
 
 void go_true()
 {
+	if (label_table.size() == 0)
+	{
+		error("no lables were created");
+		return;	
+	}
+	if (integer_stack.size() == 0)
+	{
+		error("no value on integer_stack to check");
+		return;
+	}
 	if (integer_stack.top() == 1)
 	{
 		goto_label();
 	}
+	integer_stack.pop();
 }
 
 void halt()
