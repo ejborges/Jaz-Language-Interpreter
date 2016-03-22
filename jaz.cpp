@@ -128,7 +128,8 @@ string get_instruction(string code_line){
     string temp = "";
     for(int i = 0; i < code_line.length(); i++){
         if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) break;
+        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n' || code_line[i] == 32 || code_line[i] == 13) && temp.length() != 0) break;
+        if((code_line[i] ))
         temp += code_line[i];
     }
     return temp;
@@ -162,12 +163,13 @@ string get_parameter(string code_line){
 string remove_surrounding_whitespace(string s){
     int start = -1, end = 0;
     string temp = "";
-    for(int i = 0; i < s.length(); ++i){
-        if(s[i] == ' ' || s[i] == '\t') continue;
+    for(int i = 0; i < s.length(); i++){
+        if(s[i] == ' ' || s[i] == '\t' || s[i] == 32) continue;
         else if(start == -1) start = end = i;
         else end = i;
     }
-    for(int i = start; i < end+1; i++) temp += s[i];
+    cout << "The start is: " << start << " and end is: " << end << endl;
+    for(int i = start; i < end; i++) temp += s[i];
     return temp;
 }
 
@@ -184,7 +186,10 @@ bool has_whitespace(std::string s){
 int search_variable_table(std::string name){
     if(variable_table.size() == 0) return -1;
     for(int i = 0; i < variable_table.size(); i++){
-        if(variable_table[i].name.compare(name) == 0) return i;
+        if(((variable_table[i]).name).compare(name) == 0) 
+        {
+            return i;
+        }
     }
     return -1;
 }
@@ -245,8 +250,11 @@ void read_line(){
 void execute_instruction(){
 
     // stack manipulation instructions
+        cout << "Instruction to execute: '" << instruction << "'" << endl;
          if (instruction.compare("push") == 0){
+             cout << "Parameter is '" << parameter << "'" << endl;
              parameter = remove_surrounding_whitespace(parameter);
+             cout << "Parameter is now is '" << parameter << "'" << endl;
              push();
          }
     else if (instruction.compare("rvalue") == 0){
@@ -316,7 +324,11 @@ void execute_instruction(){
 
 
     // output instructions
-    else if (instruction.compare("print") == 0)     print();
+    else if (instruction.compare("print") == 0)     
+        {
+            parameter = remove_surrounding_whitespace(parameter);
+            print();
+        }
     else if (instruction.compare("show") == 0)      show();
 
     else if (instruction.compare("") == 0)          ; // do nothing

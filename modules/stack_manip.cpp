@@ -83,6 +83,11 @@ void push()
         return;
     }
     for(int i = 0; i < parameter.length(); i++){
+    	if (i == (parameter.length()-1) && parameter[i] == ' ')
+    	{
+    		parameter[i] -= parameter[i]; //removing trailing space
+    		break;
+    	}
         if(i == 0 && parameter[0] != '-' && (parameter[0] < '0' || parameter[0] > '9')){
             error("invalid parameter '" + parameter + "' to push to integer_stack");
             return;
@@ -114,10 +119,17 @@ void push_value()
         return;
     }
     int index = search_variable_table(parameter);
-    if(index == -1){
-        warning("variable '" + parameter + "' does not exist");
-        cout << "\t\tusing value of 0 in its place" << endl;
+    if(index == -1){ //if not found, initialize a new variable with value 0
+    	variable.name = parameter;
+        variable.address = new_variable_address_value++;
+        variable.value = 0;
+        variable.scope = current_scope_level;
+        variable_table.push_back(variable);
         integer_stack.push(0);
+        
+        // warning("variable '" + parameter + "' does not exist");
+        // cout << "\t\tusing value of 0 in its place" << endl;
+        // integer_stack.push(0);
         return;
     }
     else{
