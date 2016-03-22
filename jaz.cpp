@@ -158,12 +158,52 @@ string get_parameter(string code_line){
     return temp;
 }
 
+// Given a string, remove whitespace before first char and after last char
+string remove_surrounding_whitespace(string s){
+    int start = -1, end = 0;
+    string temp = "";
+    for(int i = 0; i < s.length(); ++i){
+        if(s[i] == ' ' || s[i] == '\t') continue;
+        else if(start == -1) start = end = i;
+        else end = i;
+    }
+    for(int i = start; i < end+1; i++) temp += s[i];
+    return temp;
+}
+
+bool has_whitespace(std::string s){
+
+}
+
+int search_variable_table(std::string name){
+
+}
+
+int search_variable_table(unsigned int address){
+
+}
+
 // Scan through the entire .jaz file and note the name
 // and line number of each label
 void find_labels(){
+    string label_name;
     for(unsigned int i = 0; i < file_lines_length; i++){
         if(get_instruction(file_lines[i]).compare("label") == 0) {
-            label.label_name = get_parameter(file_lines[i]);
+
+            label_name = remove_surrounding_whitespace(get_parameter(file_lines[i]));
+
+            // check for duplicate labels
+            if(!label_table.empty())
+                for(int j = 0; j < label_table.size(); j++){
+                    if(label_name.compare(label_table[j].label_name) == 0){
+                        program_line_number = i;
+                        error("duplicate label name '" + label_name + "' in " + file +
+                                      " line " + to_string(label_table[j].line_number+1) + " and");
+                        return;
+                    }
+                }
+
+            label.label_name = label_name;
             label.line_number = i;
             label_table.push_back(label);
         }
@@ -190,8 +230,14 @@ void execute_instruction(){
 
     // stack manipulation instructions
          if (instruction.compare("push") == 0)      push();
-    else if (instruction.compare("rvalue") == 0)    push_value();
-    else if (instruction.compare("lvalue") == 0)    push_address();
+    else if (instruction.compare("rvalue") == 0)    {
+             parameter = remove_surrounding_whitespace(parameter);
+             push_value();
+         }
+    else if (instruction.compare("lvalue") == 0)    {
+             parameter = remove_surrounding_whitespace(parameter);
+             push_address();
+         }
     else if (instruction.compare("pop") == 0)       pop();
     else if (instruction.compare(":=") == 0)        set_value();
     else if (instruction.compare("copy") == 0)      copy();

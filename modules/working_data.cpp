@@ -47,6 +47,7 @@ string instruction = "";
 string parameter = "";
 unsigned int program_line_number = 0;
 unsigned int scope_level = 0;
+unsigned int new_variable_address_value = 0;
 stack<unsigned int> program_line_number_stack;
 stack<int> integer_stack;
 

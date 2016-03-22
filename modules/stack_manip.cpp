@@ -67,6 +67,7 @@
 
  using namespace std;
 
+// push instruction
 void push()
 {
     // check parameter for correctness
@@ -104,14 +105,22 @@ void push()
 
 //    cout << "\tpushed " << value_to_push << " to integer_stack from .jaz line" << program_line_number+1 << endl;
 }
+
+// rvalue instruction
 void push_value()
 {
 
 }
+
+// lvalue instruction
 void push_address()
 {
-
+    if(variable_table.empty()){
+        variable.address = ++new_variable_address_value;
+    }
 }
+
+// pop instruction
 void pop()
 {
 	if (integer_stack.empty())
@@ -122,10 +131,14 @@ void pop()
 //	cout << integer_stack.top() << " was popped from the integer stack" << endl;
 	integer_stack.pop();
 }
+
+// := instruction
 void set_value()
 {
 
 }
+
+// copy instruction
 void copy()
 {
 	

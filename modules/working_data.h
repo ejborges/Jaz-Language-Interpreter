@@ -50,6 +50,7 @@ extern std::string instruction;
 extern std::string parameter;
 extern unsigned int program_line_number;
 extern unsigned int scope_level;
+extern unsigned int new_variable_address_value;
 extern std::stack<unsigned int> program_line_number_stack;
 extern std::stack<int> integer_stack;
 
@@ -69,5 +70,8 @@ extern std::vector<variable_struct> variable_table;
 extern std::vector<label_struct> label_table;
 
 extern void error(std::string message);
+extern bool has_whitespace(std::string s);
+extern int search_variable_table(std::string name);
+extern int search_variable_table(unsigned int address);
 
 #endif //JAZ_INTERPRETER_WORKING_DATA_H
