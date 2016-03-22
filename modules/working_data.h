@@ -56,7 +56,7 @@ extern std::stack<int> integer_stack;
 
 struct variable_struct {
     std::string name;
-    unsigned int address;
+    int address;
     int value;
     int scope;
 } extern variable;
@@ -70,6 +70,7 @@ extern std::vector<variable_struct> variable_table;
 extern std::vector<label_struct> label_table;
 
 extern void error(std::string message);
+extern void warning(std::string message);
 extern bool has_whitespace(std::string s);
 extern int search_variable_table(std::string name);
 extern bool exists_in_variable_table(int address);

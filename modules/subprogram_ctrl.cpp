@@ -52,7 +52,7 @@ void end()
 		{
 			if (variable_table[i].scope == current_scope_level)
 			{
-				variable_table[i].name = "";
+				variable_table[i].name.clear();
 				variable_table[i].address = -1;
 				variable_table[i].value = 0;
 				variable_table[i].scope = -1;
@@ -70,6 +70,7 @@ void returnFromCall()
 	if (program_line_number_stack.empty())
 	{
 		error("empty program_line_number_stack, so no clue where to return to");
+		return;
 	}
 	program_line_number = program_line_number_stack.top();
 	program_line_number_stack.pop();
@@ -78,7 +79,7 @@ void returnFromCall()
 	{
 		if (variable_table[i].scope == current_scope_level)
 		{
-			variable_table[i].name = "";
+			variable_table[i].name.clear();
 			variable_table[i].address = -1;
 			variable_table[i].value = 0;
 			variable_table[i].scope = -1;

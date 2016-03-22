@@ -76,7 +76,7 @@ void goto_label()
 {
 	if (label_table.size() == 0)
 	{
-		error("no lables were created");
+		error("no labels exist");
 		return;	
 	}
 	
@@ -85,21 +85,18 @@ void goto_label()
 		if (parameter.compare(label_table[i].label_name) == 0) 
 		{
 			program_line_number = label_table[i].line_number;
-			break;
+			return;
 		}
 	}
+
+    error("label " + parameter + " does not exist");
 }
 
 void go_false()
 {
-	if (label_table.size() == 0)
-	{
-		error("no lables were created");
-		return;	
-	}
 	if (integer_stack.size() == 0)
 	{
-		error("no value on integer_stack to check");
+		error("integer_stack is empty; no value to check");
 		return;
 	}
 	if (integer_stack.top() == 0)
@@ -111,11 +108,6 @@ void go_false()
 
 void go_true()
 {
-	if (label_table.size() == 0)
-	{
-		error("no lables were created");
-		return;	
-	}
 	if (integer_stack.size() == 0)
 	{
 		error("no value on integer_stack to check");

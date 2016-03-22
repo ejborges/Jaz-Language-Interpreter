@@ -39,7 +39,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <algorithm> // count()
+#include <algorithm> // count() in init()
 #include "jaz.h"
 
 using namespace std;
@@ -182,10 +182,11 @@ bool has_whitespace(std::string s){
 // returns the variable_table index for the variable named if it exists in variable_table
 // returns -1 otherwise
 int search_variable_table(std::string name){
-//    if(!variable_table.size()) return -1;
-//    for(int i = 0; i < variable_table.size(); i++){
-//
-//    }
+    if(variable_table.size() == 0) return -1;
+    for(int i = 0; i < variable_table.size(); i++){
+        if(variable_table[i].name.compare(name) == 0) return i;
+    }
+    return -1;
 }
 
 // returns true if the address exists in variable_table
@@ -325,17 +326,19 @@ void execute_instruction(){
     else continue_main_loop = false;
 }
 
-// Print out an error message to the
-// console and signal the main loop to quit
+// Print out an error message to the console and signal the main loop to quit
 void error(string message){
     cout << "Error:\n\t\t" << message << " in " << file << " line " << program_line_number+1 << endl;
     continue_main_loop = false;
     had_error = true;
 }
 
-// Perform any cleanup
-// before terminating
-// the interpreter
+// Print out a warning message to the console
+void warning(string message){
+    cout << "Warning:\n\t\t" << message << " in " << file << " line " << program_line_number+1 << endl;
+}
+
+// Perform any cleanup before terminating the interpreter
 void cleanup(){
     out_file.close();
     if(!had_error) cout << "\n\tJaz program ran successfully" << endl;

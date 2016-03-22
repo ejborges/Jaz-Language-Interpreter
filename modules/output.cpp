@@ -42,7 +42,7 @@ ofstream out_file;
 void print(){
 	if (integer_stack.empty())
 	{
-		error("nothing to print, empty stack");
+		error("nothing to print, empty integer_stack");
 		return;
 	}
 	out_file << integer_stack.top() << endl;

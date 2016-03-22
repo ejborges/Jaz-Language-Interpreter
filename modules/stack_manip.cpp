@@ -109,14 +109,44 @@ void push()
 // rvalue instruction
 void push_value()
 {
-
+    if(parameter.length() == 0) {
+        error("no parameter specified; expected variable name");
+        return;
+    }
+    int index = search_variable_table(parameter);
+    if(index == -1){
+        warning("variable '" + parameter + "' does not exist");
+        cout << "\t\tusing value of 0 in its place" << endl;
+        integer_stack.push(0);
+        return;
+    }
+    else{
+        if((current_scope_level - variable_table[index].scope) > 1){
+            integer_stack.push(0);
+        }
+        else integer_stack.push(variable_table[index].value);
+    }
 }
 
 // lvalue instruction
 void push_address()
 {
-    if(variable_table.empty()){
-        variable.address = ++new_variable_address_value;
+    if(parameter.length() == 0) {
+        error("no parameter specified; expected variable name");
+        return;
+    }
+    int index = search_variable_table(parameter);
+    if(index == -1){
+        variable.name = parameter;
+        variable.address = new_variable_address_value++;
+        variable.value = 0;
+        variable.scope = current_scope_level;
+        variable_table.push_back(variable);
+        integer_stack.push(variable.address);
+        return;
+    }
+    else{
+        integer_stack.push(variable_table[index].address);
     }
 }
 
@@ -125,7 +155,7 @@ void pop()
 {
 	if (integer_stack.empty())
 	{
-        error("popped empty integer_stack");
+        error("nothing to pop, empty integer_stack");
 		return;
 	}
 	integer_stack.pop();
@@ -150,8 +180,11 @@ void set_value()
         return;
     }
 
-    if (!((variable_table[address].scope + 1) == current_scope_level || variable_table[address].scope == current_scope_level))
+    if (!((variable_table[address].scope + 1) == current_scope_level
+          || variable_table[address].scope == current_scope_level))
     {
+        cout << "current_scope_level = " << current_scope_level
+        << "\nvariable_table[" << address << "].scope = " << variable_table[address].scope << endl;
         error("variable " + variable.name + " out of scope");
         return;
     }
@@ -163,7 +196,7 @@ void copy()
 {
 	if (integer_stack.empty())
     {
-        error("nothing in the stack to copy");
+        error("nothing to copy, empty integer_stack");
         return;
     }
     integer_stack.push(integer_stack.top());
