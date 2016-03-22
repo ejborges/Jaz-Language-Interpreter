@@ -171,16 +171,26 @@ string remove_surrounding_whitespace(string s){
     return temp;
 }
 
+// return true if given string contains whitespace
 bool has_whitespace(std::string s){
-
+    for(int i = 0; i < s.length(); i++){
+        if(s[i] == ' ' || s[i] == '\t' || s[i] == '\n') return true;
+    }
+    return false;
 }
 
+// returns the variable_table index for the variable named if it exists in variable_table
+// returns -1 otherwise
 int search_variable_table(std::string name){
-
+//    if(!variable_table.size()) return -1;
+//    for(int i = 0; i < variable_table.size(); i++){
+//
+//    }
 }
 
-int search_variable_table(unsigned int address){
-
+// returns true if the address exists in variable_table
+bool exists_in_variable_table(int address){
+    return (address >= 0 && address < variable_table.size());
 }
 
 // Scan through the entire .jaz file and note the name
@@ -191,6 +201,11 @@ void find_labels(){
         if(get_instruction(file_lines[i]).compare("label") == 0) {
 
             label_name = remove_surrounding_whitespace(get_parameter(file_lines[i]));
+
+            if(has_whitespace(label_name)){
+                error("whitespace not allowed in label names; label '" + label_name + "'");
+                return;
+            }
 
             // check for duplicate labels
             if(!label_table.empty())
@@ -229,12 +244,15 @@ void read_line(){
 void execute_instruction(){
 
     // stack manipulation instructions
-         if (instruction.compare("push") == 0)      push();
-    else if (instruction.compare("rvalue") == 0)    {
+         if (instruction.compare("push") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             push();
+         }
+    else if (instruction.compare("rvalue") == 0){
              parameter = remove_surrounding_whitespace(parameter);
              push_value();
          }
-    else if (instruction.compare("lvalue") == 0)    {
+    else if (instruction.compare("lvalue") == 0){
              parameter = remove_surrounding_whitespace(parameter);
              push_address();
          }
@@ -242,12 +260,26 @@ void execute_instruction(){
     else if (instruction.compare(":=") == 0)        set_value();
     else if (instruction.compare("copy") == 0)      copy();
 
+
     // control flow instructions
-    else if (instruction.compare("label") == 0)     check_label();
-    else if (instruction.compare("goto") == 0)      goto_label();
-    else if (instruction.compare("gofalse") == 0)   go_false();
-    else if (instruction.compare("gotrue") == 0)    go_true();
+    else if (instruction.compare("label") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             check_label();
+         }
+    else if (instruction.compare("goto") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             goto_label();
+         }
+    else if (instruction.compare("gofalse") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             go_false();
+         }
+    else if (instruction.compare("gotrue") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             go_true();
+         }
     else if (instruction.compare("halt") == 0)      halt();
+
 
     // arithmetic operator instructions
     else if (instruction.compare("+") == 0)         add();
@@ -256,10 +288,12 @@ void execute_instruction(){
     else if (instruction.compare("/") == 0)         div();
     else if (instruction.compare("div") == 0)       mod();
 
+
     // logical operator instructions
-    else if (instruction.compare("&") == 0)         bitwise_and();
-    else if (instruction.compare("!") == 0)         bitwise_bang();
-    else if (instruction.compare("|") == 0)         bitwise_or();
+    else if (instruction.compare("&") == 0)         logic_and();
+    else if (instruction.compare("!") == 0)         logic_bang();
+    else if (instruction.compare("|") == 0)         logic_or();
+
 
     // relational operator instructions
     else if (instruction.compare("<>") == 0)        not_equal();
@@ -269,11 +303,16 @@ void execute_instruction(){
     else if (instruction.compare(">") == 0)         greater_than();
     else if (instruction.compare("=") == 0)         equal();
 
+
     // subprogram control instructions
     else if (instruction.compare("begin") == 0)     begin();
     else if (instruction.compare("end") == 0)       end();
     else if (instruction.compare("return") == 0)    returnFromCall();
-    else if (instruction.compare("call") == 0)      call();
+    else if (instruction.compare("call") == 0){
+             parameter = remove_surrounding_whitespace(parameter);
+             call();
+         }
+
 
     // output instructions
     else if (instruction.compare("print") == 0)     print();

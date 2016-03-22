@@ -63,17 +63,20 @@
  *
  *          Logical Operators
  *
- *              bitwise_and()
+ *              logic_and()
  *                  Pops the top two integers from the integer_stack,
- *                  bitwise AND them, and pushes the result to the integer_stack.
+ *                  logical AND them, and pushes the result to the integer_stack.
+ *                  pushes 1 for true, 0 for false
  *
- *              bitwise_bang()
+ *              logic_bang()
  *                  Pops the top integer from the integer_stack,
- *                  bitwise NOT it, and pushes the result to the integer_stack.
+ *                  logical NOT it, and pushes the result to the integer_stack.
+ *                  pushes 1 for true, 0 for false
  *
- *              bitwise_or()
+ *              logic_or()
  *                  Pops the top two integers from the integer_stack,
- *                  bitwise OR them, and pushes the result to the integer_stack.
+ *                  logical OR them, and pushes the result to the integer_stack.
+ *                  pushes 1 for true, 0 for false
  *
  *          Relational Operators
  *
@@ -140,19 +143,19 @@ void mod()
 	//2)Performs the modulo operation(%) on one to the other
 	//3)Pushes Result to the stack
 }
-void bitwise_and()
+void logic_and()
 {
 	//1)Pops the top 2 values
 	//2)Bitwise and(&) one and the other
 	//3)Pushes Result to the stack
 }
-void bitwise_bang()
+void logic_bang()
 {
 	//1)Pops the top value
 	//2)Bitwise bangs(!) it
 	//3)Pushes Result to the stack
 }
-void bitwise_or()
+void logic_or()
 {
 	//1)Pops the top 2 values
 	//2)Bitwise or(|) one and the other
