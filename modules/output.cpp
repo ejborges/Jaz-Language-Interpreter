@@ -40,7 +40,12 @@ using namespace std;
 ofstream out_file;
 
 void print(){
-
+	if (integer_stack.empty())
+	{
+		error("nothing to print, empty stack");
+		return;
+	}
+	cout << integer_stack.top() << endl;
 }
 
 void show(){

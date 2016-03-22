@@ -74,7 +74,7 @@ void check_label()
 
 void goto_label()
 {
-	for (int i = 0; i < lable_table.size(); ++i)
+	for (int i = 0; i < label_table.size(); ++i)
 	{
 		if (parameter.compare(label_table[i].label_name) == 0) 
 		{
