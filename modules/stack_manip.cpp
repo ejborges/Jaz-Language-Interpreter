@@ -83,6 +83,11 @@ void push()
         return;
     }
     for(int i = 0; i < parameter.length(); i++){
+//        if (i == (parameter.length()-1) && (parameter[i] == 32 || parameter[i] == 9 || parameter[i] == 13))
+//        {
+//            parameter[i] = 0; //removing trailing whitespace if remove_surrounding_whitespace() failed
+//            break;
+//        }
         if(i == 0 && parameter[0] != '-' && (parameter[0] < '0' || parameter[0] > '9')){
             error("invalid parameter '" + parameter + "' to push to integer_stack");
             return;

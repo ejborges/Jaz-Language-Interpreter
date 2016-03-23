@@ -66,7 +66,7 @@ void init(int argc, char* argv[]){
     }
     file = argv[1];
     if(file.length() < 5){
-        cout << "Invalid argument '" << file << "'";
+        cout << "Invalid argument '" << file << "'\n";
         exit(1);
     }
     else if (file[file.length() - 4] != '.' &&
@@ -82,14 +82,14 @@ void init(int argc, char* argv[]){
     // Open the .jaz file
     ifstream in_file(file);
     if(in_file.fail()){
-        cout << "Error opening file " << file;
+        cout << "Error opening file " << file << endl;
         exit(1);
     }
 
     // Create or open the .out file and discard all previous contents
     out_file.open(filename + ".out", ofstream::trunc);
     if(out_file.fail()){
-        cout << "Error opening file " << filename << ".out";
+        cout << "Error opening file " << filename << ".out" << endl;
         exit(1);
     }
 
@@ -103,12 +103,12 @@ void init(int argc, char* argv[]){
     #endif
 
     // Load .jaz file lines into file_lines vector
-    string temp;
+    string temp = "";
     for(int i = 0; i < file_lines_length; i++){
-        getline(in_file, temp);
+        getline(in_file, temp, (char)10);
         file_lines.push_back(temp);
         if(in_file.fail() && !in_file.eof()){
-            cout << "Error reading the file " << file;
+            cout << "Error reading the file " << file << endl;
             exit(1);
         }
     }
@@ -127,8 +127,9 @@ void init(int argc, char* argv[]){
 string get_instruction(string code_line){
     string temp = "";
     for(int i = 0; i < code_line.length(); i++){
-        if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-        if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) break;
+        if((code_line[i] == 32 || code_line[i] == 9) && temp.length() == 0) continue;
+        if((code_line[i] == 32 || code_line[i] == 9 || code_line[i] == 13 || code_line[i] == 10) &&
+                temp.length() != 0) break;
         temp += code_line[i];
     }
     return temp;
@@ -141,8 +142,10 @@ string get_parameter(string code_line){
     for(int i = 0; i < code_line.length(); i++){
         if(!gotInstruction)
         {
-            if((code_line[i] == ' ' || code_line[i] == '\t') && temp.length() == 0) continue;
-            if((code_line[i] == ' ' || code_line[i] == '\t' || code_line[i] == '\n') && temp.length() != 0) 
+            if(((int)code_line[i] == 32 || (int)code_line[i] == 9) && temp.length() == 0) continue;
+            if(((int)code_line[i] == 32 || (int)code_line[i] == 9 ||
+                    (int)code_line[i] == 13 || (int)code_line[i] == 10) &&
+               temp.length() != 0)
             {
                 gotInstruction = true;    
                 temp = "";
@@ -163,7 +166,7 @@ string remove_surrounding_whitespace(string s){
     int start = -1, end = 0;
     string temp = "";
     for(int i = 0; i < s.length(); ++i){
-        if(s[i] == ' ' || s[i] == '\t') continue;
+        if((int)s[i] == 32 || (int)s[i] == 9 || (int)s[i] == 13 || (int)s[i] == 10) continue;
         else if(start == -1) start = end = i;
         else end = i;
     }
@@ -174,7 +177,9 @@ string remove_surrounding_whitespace(string s){
 // return true if given string contains whitespace
 bool has_whitespace(std::string s){
     for(int i = 0; i < s.length(); i++){
-        if(s[i] == ' ' || s[i] == '\t' || s[i] == '\n') return true;
+        if((int)s[i] == 32 || (int)s[i] == 9 || (int)s[i] == 13 || (int)s[i] == 10) {
+            return true;
+        }
     }
     return false;
 }
@@ -207,7 +212,7 @@ bool exists_in_variable_table(int address){
 // Scan through the entire .jaz file and note the name
 // and line number of each label
 void find_labels(){
-    string label_name;
+    string label_name = "";
     for(unsigned int i = 0; i < file_lines_length; i++){
         if(get_instruction(file_lines[i]).compare("label") == 0) {
 

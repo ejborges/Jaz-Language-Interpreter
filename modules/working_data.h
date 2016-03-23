@@ -42,7 +42,7 @@
 
 #define cout cout<<"\t"
 //#define DEBUG_TEXT
-#define TRACE_CODE
+//#define TRACE_CODE
 
 extern std::string file;
 extern std::string filename;
