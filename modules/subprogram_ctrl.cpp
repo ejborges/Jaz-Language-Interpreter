@@ -45,10 +45,13 @@ void begin()
         warning("instruction begin does not take a parameter");
         return;
     }
-	current_scope_level++;
+
+    inside_begin_block = true;
+
+	//current_scope_level++;
 #ifdef TRACE_CODE
-    cout << "line " << program_line_number << ": begin; increased scope_level from "
-    << current_scope_level-1 << " to " << current_scope_level << "\n";
+//    cout << "line " << program_line_number << ": begin; increased scope_level from "
+//    << current_scope_level-1 << " to " << current_scope_level << "\n";
 #endif
 }
 
@@ -59,31 +62,27 @@ void end()
         warning("instruction end does not take a parameter");
         return;
     }
-	if (current_scope_level > 0)
-	{
-		for (int i = 0; i < variable_table.size(); ++i)
+
+    inside_begin_block = false;
+
+	for (int i = 0; i < variable_table.size(); ++i)
 		{
-			if (variable_table[i].scope == current_scope_level)
+			if (variable_table[i].scope == current_scope_level && variable_table[i].dont_delete)
 			{
+                if (variable_table[i].original_scope > current_scope_level){
 #ifdef TRACE_CODE
-                cout << "line " << program_line_number << ": end; cleared variable "
-                << variable_table[i].name << " at address " << i << " with value "
-                << variable_table[i].value << " and scope " << variable_table[i].scope << "\n";
+                    cout << "line " << program_line_number << ": end; cleared variable "
+                    << variable_table[i].name << " at address " << i << " with value "
+                    << variable_table[i].value << " and scope " << variable_table[i].scope << "\n";
 #endif
-				variable_table[i].name.clear();
-				variable_table[i].address = -1;
-				variable_table[i].value = 0;
-				variable_table[i].scope = -1;
-                variable_table[i].coppied_from_address = -1;
+                    variable_table[i].name.clear();
+                    variable_table[i].address = -1;
+                    variable_table[i].value = 0;
+                    variable_table[i].scope = -1;
+                    variable_table[i].original_scope = -1;
+                }
 			}
 		}
-		current_scope_level--;
-#ifdef TRACE_CODE
-        cout << "line " << program_line_number << ": end; decreased scope_level from "
-        << current_scope_level+1 << " to " << current_scope_level << "\n";
-#endif
-	} 
-	else error("can't end, too low of scope, current scope value = " + to_string(current_scope_level));
 }
 
 //This will decrement the current scope level so the program
@@ -100,46 +99,72 @@ void returnFromCall()
 		return;
 	}
 
+//    // "delete" variables going out of scope
+//    for (int i = 0; i < variable_table.size(); ++i)
+//    {
+//        if (variable_table[i].scope == current_scope_level &&
+//                variable_table[i].dont_delete)
+//        {
+//
+//#ifdef TRACE_CODE
+//            cout << "line " << program_line_number << ": return; cleared variable "
+//            << variable_table[i].name << " at address " << i << " with value "
+//            << variable_table[i].value << " and scope " << variable_table[i].scope << "\n";
+//#endif
+//            variable_table[i].name.clear();
+//            variable_table[i].address = -1;
+//            variable_table[i].value = 0;
+//            variable_table[i].scope = -1;
+//            variable_table[i].coppied_from_address = -1;
+//
+//        }
+//    }
+
     // copy this
-    for(int i = 0; i < variable_table.size(); i++){
-        if((variable_table[i].coppied_from_address != -1) &&
-                (variable_table[variable_table[i].coppied_from_address].scope == current_scope_level-1)){
-#ifdef TRACE_CODE
-            cout << "line " << program_line_number << ": return; copied variable "
-            << variable_table[i].name << " with value " << variable_table[i].value << " and address "
-            << variable_table[i].address << " and scope " << variable_table[i].scope << " to variable "
-            << variable_table[variable_table[i].coppied_from_address].name << " with value "
-            << variable_table[variable_table[i].coppied_from_address].value << " and address "
-            << variable_table[variable_table[i].coppied_from_address].address << " and scope "
-            << variable_table[variable_table[i].coppied_from_address].scope << "\n";
-#endif
-            variable_table[variable_table[i].coppied_from_address].value = variable_table[i].value;
-//            variable_table[i].value = variable_table[variable_table[i].coppied_from_address].value;
-#ifdef TRACE_CODE
-//            cout << "HERE line " << program_line_number << ": return; copied variable ("
-//            << variable_table[i].name << ", " << variable_table[i].value << ") to "
-//            << "(" << variable_table[variable_table[i].coppied_from_address].name
-//            << ", " << variable_table[variable_table[i].coppied_from_address].value
-//            << ")" << "\n";
-#endif
-        }
-    }
+//    for(int i = 0; i < variable_table.size(); i++){
+//        if((variable_table[i].coppied_from_address != -1) &&
+//                (variable_table[variable_table[i].coppied_from_address].scope == current_scope_level-1)){
+//#ifdef TRACE_CODE
+//            cout << "line " << program_line_number << ": return; copied variable "
+//            << variable_table[i].name << " with value " << variable_table[i].value << " and address "
+//            << variable_table[i].address << " and scope " << variable_table[i].scope << " to variable "
+//            << variable_table[variable_table[i].coppied_from_address].name << " with value "
+//            << variable_table[variable_table[i].coppied_from_address].value << " and address "
+//            << variable_table[variable_table[i].coppied_from_address].address << " and scope "
+//            << variable_table[variable_table[i].coppied_from_address].scope << "\n";
+//#endif
+//            variable_table[variable_table[i].coppied_from_address].value = variable_table[i].value;
+////            variable_table[i].value = variable_table[variable_table[i].coppied_from_address].value;
+//#ifdef TRACE_CODE
+////            cout << "HERE line " << program_line_number << ": return; copied variable ("
+////            << variable_table[i].name << ", " << variable_table[i].value << ") to "
+////            << "(" << variable_table[variable_table[i].coppied_from_address].name
+////            << ", " << variable_table[variable_table[i].coppied_from_address].value
+////            << ")" << "\n";
+//#endif
+//        }
+//    }
 
     // "delete" variables going out of scope
 	for (int i = 0; i < variable_table.size(); ++i)
 	{
 		if (variable_table[i].scope == current_scope_level)
 		{
+            if(variable_table[i].dont_delete){
+                variable_table[i].scope--;
+            }
+            else{
 #ifdef TRACE_CODE
-            cout << "line " << program_line_number << ": return; cleared variable "
-            << variable_table[i].name << " at address " << i << " with value "
-            << variable_table[i].value << " and scope " << variable_table[i].scope << "\n";
+                cout << "line " << program_line_number << ": return; cleared variable "
+                << variable_table[i].name << " at address " << i << " with value "
+                << variable_table[i].value << " and scope " << variable_table[i].scope << "\n";
 #endif
-			variable_table[i].name.clear();
-			variable_table[i].address = -1;
-			variable_table[i].value = 0;
-			variable_table[i].scope = -1;
-            variable_table[i].coppied_from_address = -1;
+                variable_table[i].name.clear();
+                variable_table[i].address = -1;
+                variable_table[i].value = 0;
+                variable_table[i].scope = -1;
+                variable_table[i].original_scope = -1;
+            }
 		}
 	}
 	if (current_scope_level > 0){
@@ -158,7 +183,7 @@ void returnFromCall()
 #endif
     program_line_number = program_line_number_stack.top();
     program_line_number_stack.pop();
-
+    inside_begin_block = true;
 }
 
 //We use the input label to jump to the subroutine specified
@@ -166,16 +191,22 @@ void returnFromCall()
 void call()
 {
     // copy this scope's vars into new scope with new address
-    for(int i = 0; i < variable_table.size(); i++){
-        if(variable_table[i].scope == current_scope_level){
-            variable.name = variable_table[i].name;
-            variable.address = new_variable_address_value++;
-            variable.value = variable_table[i].value;
-            variable.scope =  variable_table[i].scope+1;
-            variable.coppied_from_address = i;
-            variable_table.push_back(variable);
-        }
-    }
+//    for(int i = 0; i < variable_table.size(); i++){
+//        if(variable_table[i].scope == current_scope_level){
+//            variable.name = variable_table[i].name;
+//            variable.address = new_variable_address_value++;
+//            variable.value = variable_table[i].value;
+//            variable.scope =  variable_table[i].scope+1;
+//            variable.coppied_from_address = i;
+//            variable_table.push_back(variable);
+//#ifdef TRACE_CODE
+//            cout << "line " << program_line_number << ": call; created new variable "
+//            << variable.name << " with address " << variable.address
+//            << " and value " << variable.value << " and scope " << variable.scope
+//            << " and copied_from_address " << variable.coppied_from_address << "\n";
+//#endif
+//        }
+//    }
 
 	current_scope_level++;
 	program_line_number_stack.push(program_line_number);
@@ -184,5 +215,8 @@ void call()
     << current_scope_level-1 << " to " << current_scope_level << " and pushed line number "
     << program_line_number << " to the program_line_number_stack\n";
 #endif
+
+    inside_begin_block = false;
+
 	goto_label();
 }

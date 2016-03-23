@@ -50,6 +50,7 @@ extern std::vector<std::string> file_lines;
 extern unsigned int file_lines_length;
 
 extern bool continue_main_loop;
+extern bool inside_begin_block;
 extern std::string instruction;
 extern std::string parameter;
 extern unsigned int program_line_number;
@@ -63,7 +64,8 @@ struct variable_struct {
     int address;
     int value;
     int scope;
-    int coppied_from_address;
+    int original_scope;
+    bool dont_delete;
 } extern variable;
 
 struct label_struct {

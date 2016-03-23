@@ -119,8 +119,15 @@ void push_value()
         variable.name = parameter;
         variable.address = new_variable_address_value++;
         variable.value = 0;
-        variable.scope = current_scope_level;
-        variable.coppied_from_address = -1;
+        if(inside_begin_block) {
+            variable.scope = current_scope_level+1;
+            variable.original_scope = current_scope_level+1;
+        }
+        else {
+            variable.scope = current_scope_level;
+            variable.original_scope = current_scope_level;
+        }
+        variable.dont_delete = inside_begin_block;
         integer_stack.push(0);
         variable_table.push_back(variable);
 #ifdef TRACE_CODE
@@ -151,8 +158,15 @@ void push_address()
         variable.name = parameter;
         variable.address = new_variable_address_value++;
         variable.value = 0;
-        variable.scope = current_scope_level;
-        variable.coppied_from_address = -1;
+        if(inside_begin_block) {
+            variable.scope = current_scope_level+1;
+            variable.original_scope = current_scope_level+1;
+        }
+        else {
+            variable.scope = current_scope_level;
+            variable.original_scope = current_scope_level;
+        }
+        variable.dont_delete = inside_begin_block;
         integer_stack.push(variable.address);
         variable_table.push_back(variable);
 #ifdef TRACE_CODE
@@ -212,7 +226,7 @@ void set_value()
         return;
     }
 
-    if (!((variable_table[address].scope + 1) == current_scope_level
+    if (!((variable_table[address].scope - 1) == current_scope_level
           || variable_table[address].scope == current_scope_level))
     {
         cout << "current_scope_level = " << current_scope_level

@@ -42,6 +42,7 @@ vector<string> file_lines;
 unsigned int file_lines_length;
 
 bool continue_main_loop = true;
+bool inside_begin_block = false;
 string instruction = "";
 string parameter = "";
 unsigned int program_line_number = 0;

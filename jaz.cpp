@@ -187,7 +187,7 @@ int search_variable_table(std::string var_name){
     if(var_name.size() == 0) return -1;
     for(int i = 0; i < variable_table.size(); i++){
         if(variable_table[i].name.compare(var_name) == 0){
-            if((current_scope_level - variable_table[i].scope) > 1) continue;
+            if((current_scope_level - variable_table[i].scope) > 0) continue;
 //            if((current_scope_level - variable_table[i].scope) <= 1 &&
 //                    (current_scope_level - variable_table[i].scope) >= -1) continue;
             else return i;
